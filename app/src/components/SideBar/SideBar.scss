@@ -1,0 +1,134 @@
+nav.side-nav {
+    background-color: #110f11c7;
+    height: 100%;
+    max-width: 70px;
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+nav.side-nav .side-logo {
+    height: 47px;
+    width: 47px;
+    padding: 11.5px 11.5px;
+    border-radius: 50%;
+    background-color: #212121;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+nav.side-nav ul li.active .side-logo {
+    border-radius: 13px !important;
+}
+
+nav.side-nav ul li .side-logo img {
+    border-radius: 0 !important;
+}
+
+nav.side-nav ul li.active .side-logo img {
+    border-radius: 0 !important;
+}
+
+
+
+nav.side-nav ul:first-child {
+    height: auto;
+}
+
+nav.side-nav ul {
+    list-style: none;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    -webkit-app-region: no-drag;
+}
+
+nav.side-nav ul li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 47px;
+    width: 47px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out, border-radius 0.3s ease-in-out;
+}
+
+nav.side-nav ul li a{
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    text-decoration: none;
+    border-radius: 50%;
+    transition: background-color 0.15s ease-in-out, border-radius 0.3s ease-in-out;
+}
+
+nav.side-nav ul li.active {
+    border-radius: 13px !important;
+}
+
+nav.side-nav ul li.active img{
+    border-radius: 13px !important;
+}
+
+nav.side-nav ul li.active img{
+    border-radius: 13px !important;
+}
+
+nav.side-nav ul li.profile {
+    border-radius: 50%;
+}
+
+nav.side-nav ul li:hover {
+    background-color: rgba(255, 255, 255, 0.040);
+    border-radius: 13px;
+}
+
+nav.side-nav ul li:hover a{
+    border-radius: 13px !important;
+}
+
+nav.side-nav ul li.active a{
+    border-radius: 13px !important;
+}
+
+nav.side-nav ul li:hover.profile img{
+    border-radius: 13px;
+}
+
+nav.side-nav ul li:active {
+    opacity: 0.7;
+    background-color: rgba(255, 255, 255, 0.040);
+    transform: scale(.98);
+}
+
+nav.side-nav ul li img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+nav.side-nav ul li.profile img{
+    border-radius: 50%;
+    transition: border-radius 0.3s ease-in-out;
+}

@@ -1,0 +1,21 @@
+main{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 30px);
+    overflow: auto;
+    display: flex;
+}
+
+.View {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    color: #fff;
+    -webkit-app-region: no-drag;
+}

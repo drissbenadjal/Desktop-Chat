@@ -1,0 +1,102 @@
+.headerbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-height: 50px;
+    height: 100%;
+    padding: 0 20px;
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #333;
+
+    button {
+        font-size: 0.95rem;
+        border: none;
+        background-color: transparent;
+        color: #fff;
+        outline: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .headerbar__left {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        width: auto;
+        height: 100%;
+
+        .status {
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            border: 2px solid #212121;
+        }
+
+        .status.online {
+            background-color: #51c051;
+        }
+
+        .status.offline {
+            background-color: #555;
+        }
+
+        .status.afk {
+            background-color: #c0c051;
+        }
+
+        .status.dnd {
+            background-color: #c05151;
+        }
+    }
+
+    .headerbar__right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        width: auto;
+        height: 100%;
+
+        ul {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            width: auto;
+            height: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            li {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 10px;
+                width: auto;
+                height: 100%;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            form {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: auto;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+}

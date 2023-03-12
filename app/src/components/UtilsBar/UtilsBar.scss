@@ -1,0 +1,274 @@
+.utilsbar{
+    max-width: 240px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    background-color: #212121;
+    overflow-y: auto;
+    border-top-left-radius: 10px;
+}
+
+.utilsbar .utilsbar-header{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+    border-bottom: 1px solid #333;
+
+    form{
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+        margin: 0;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background-color: #333;
+
+        input{
+            width: 100%;
+            height: 25px;
+            border: none;
+            background-color: transparent;
+            color: #fff;
+            outline: none;
+        }
+    }
+}
+
+.utilsbar .utilsbar-action{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 0 10px;
+
+    a {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 10px;
+        border-radius: 5px;
+        color: #fff;
+        text-decoration: none;
+        transition: all 0.10s ease-in-out;
+
+        &:hover{
+            background-color: #333;
+        }
+    }
+
+    a.active{
+        background-color: #333;
+    }
+}
+
+.utilsbar .utilsbar-friend {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+
+    .utilsbar-friend__top {
+        width: 100%;
+        height: 30px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+    }
+
+    .utilsbar-friend__top ul {
+        width: 100%;
+        height: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 10px;
+            border-radius: 5px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.10s ease-in-out;
+            margin: 0;
+
+            p{
+                font-size: 0.75rem;
+                margin: 0;
+            }
+
+            button{
+                border: none;
+                border-radius: 5px;
+                color: #fff;
+                outline: none;
+                cursor: pointer;
+                background-color: #555;
+                transition: all 0.10s ease-in-out;
+                margin: 0;
+
+                &:hover{
+                    background-color: #555;
+                }
+            }
+        }
+    }
+
+    .utilsbar-friend__bottom {
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+
+        ul {
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 3px;
+            list-style: none;
+            padding: 10px 0px;
+            margin: 0;
+
+            li.active-pm{
+                background-color: #333;
+            }
+
+            li {
+                position: relative;
+                width: 100%;
+                height: 43px;
+                display: flex;
+                border-radius: 5px;
+                padding: 0 10px;
+                a{
+                    width: 100%;
+                    height: 43px;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    gap: 10px;
+                    color: #fff;
+                    text-decoration: none;
+                    transition: all 0.10s ease-in-out;
+                    margin: 0;
+
+                    img {
+                        width: 33px;
+                        height: 33px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+
+                    .status-container {
+                        position: relative;
+                        width: 33px;
+                        height: 33px;
+
+                        .status {
+                            position: absolute;
+                            bottom: 0px;
+                            right: 0px;
+                            width: 13.5px;
+                            height: 13.5px;
+                            border-radius: 50%;
+                            border: 2px solid #212121;
+                        }
+
+                        .status.online {
+                            background-color: #51c051;
+                        }
+
+                        .status.offline {
+                            background-color: #555;
+                        }
+
+                        .status.afk {
+                            background-color: #c0c051;
+                        }
+
+                        .status.dnd {
+                            background-color: #c05151;
+                        }
+
+                    }
+                }
+
+                &:hover{
+                    background-color: #333;
+                }
+
+                .close-pm{
+                    opacity: 0;
+                    position: absolute;
+                    top: 50%;
+                    right: 5px;
+                    transform: translateY(-50%);
+                    width: 25px;
+                    height: 25px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: transparent;
+                    border: none;
+                    cursor: pointer;
+                    transition: all 0.10s ease-in-out;
+
+
+                    img {
+                        opacity: 0.7;
+                        width: 17px;
+                        height: 17px;
+                        object-fit: cover;
+
+                        &:hover{
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                &:hover{
+                    .close-pm{
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+}
