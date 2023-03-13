@@ -1,5 +1,11 @@
 import './HeaderBar.scss'
 
+import UserPlusLogo from '../../assets/icons/user-plus.svg'
+import VideoLogo from '../../assets/icons/video.svg'
+import UsersLogo from '../../assets/icons/user-square.svg'
+import CallLogo from '../../assets/icons/call.svg'
+
+
 export const HeaderBar = () => {
     return (
         <div className="headerbar">
@@ -13,22 +19,22 @@ export const HeaderBar = () => {
                 <ul>
                     <li>
                         <button>
-                            call
+                            <img className='call-logo' src={CallLogo} alt="" />
                         </button>
                     </li>
                     <li>
                         <button>
-                            video
+                            <img className='video-logo' src={VideoLogo} alt="" />
                         </button>
                     </li>
                     <li>
                         <button>
-                            group
+                            <img className='user-plus-logo' src={UserPlusLogo} alt="" />
                         </button>
                     </li>
                     <li>
                         <button>
-                            all
+                            <img className='users-logo' src={UsersLogo} alt="" />
                         </button>
                     </li>
                     <li>

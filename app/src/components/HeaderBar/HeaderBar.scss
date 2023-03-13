@@ -87,6 +87,57 @@
                 list-style: none;
                 margin: 0;
                 padding: 0;
+
+                button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 35px;
+                    height: 35px;
+                    gap: 6px;
+                    border: none;
+                    border-radius: 5px;
+                    color: #fff;
+                    outline: none;
+                    cursor: pointer;
+                    background-color: transparent;
+                    transition: background-color 0.2s ease-in-out;
+                    margin: 0;
+
+                    .call-logo {
+                        width: 20px;
+                        height: 20px;
+                    }
+
+                    .video-logo {
+                        width: 28px;
+                        height: 28px;
+                    }
+
+                    .user-plus-logo {
+                        width: 23px;
+                        height: 23px;
+                    }
+
+                    .users-logo {
+                        width: 22.5px;
+                        height: 22.5px;
+                    }
+
+                    img {
+                        width: 25px;
+                        height: 25px;
+                        object-fit: contain;
+                        opacity: 0.8;
+                        transition: opacity 0.2s ease-in-out;
+                    }
+                    
+
+                    &:hover img{
+                        opacity: 1;
+                    }
+                }
+
             }
 
             form {
