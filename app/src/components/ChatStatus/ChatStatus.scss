@@ -1,0 +1,176 @@
+.chat-status {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .chat-status__container {
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .chat-status__container__bottom{
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding: 0 12.5px 0 6.5px;
+            border-top: 1px solid #333;
+
+            .chat-status__container__bottom__left {
+                width: 65%;
+                height: 50px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 10px;
+                
+                button{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+                    gap: 6px;
+                    border: none;
+                    border-radius: 5px;
+                    color: #fff;
+                    outline: none;
+                    cursor: pointer;
+                    background-color: transparent;
+                    transition: background-color 0.2s ease-in-out;
+                    margin: 0;
+                    padding: 3.5px 2px;
+
+                    &:hover{
+                        background-color: #333;
+                    }
+
+
+                    img {
+                        width: 33px;
+                        height: 33px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                    }
+                    
+                    .status-container {
+                        position: relative;
+                        width: 33px;
+                        height: 33px;
+
+                        .status {
+                            position: absolute;
+                            bottom: 0px;
+                            right: 0px;
+                            width: 13.5px;
+                            height: 13.5px;
+                            border-radius: 50%;
+                            border: 2px solid #212121;
+                        }
+
+                        .status.online {
+                            background-color: #51c051;
+                        }
+
+                        .status.offline {
+                            background-color: #555;
+                        }
+
+                        .status.afk {
+                            background-color: #c0c051;
+                        }
+
+                        .status.dnd {
+                            background-color: #c05151;
+                        }
+
+                    }
+
+                    .user-infos {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: flex-start;
+                        gap: 0px;
+
+                        p{
+                            font-weight: 500;
+                            margin: 0;
+                        }
+
+                        .username {
+                            font-size: 0.8rem;
+                        }
+
+                        .tag {
+                            font-size: 0.7rem;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            .chat-status__container__bottom__right {
+                height: 50px;
+                width: 40%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                gap: 10px;
+                
+                ul {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    list-style: none;
+                    gap: 1px;
+                    margin: 0;
+                    padding: 0;
+
+                    li {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border: none;
+                        border-radius: 5px;
+                        color: #fff;
+                        outline: none;
+                        cursor: pointer;
+                        background-color: transparent;
+                        transition: background-color 0.2s ease-in-out;
+
+                        &:hover{
+                            background-color: #333;
+                        }
+
+                        button {
+                            background-color: transparent;
+                            width: 30px;
+                            height: 30px;
+                            border: none;
+                            cursor: pointer;
+
+                            img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: contain;
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+        
+    }
+
+}
