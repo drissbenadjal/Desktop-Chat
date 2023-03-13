@@ -9,6 +9,8 @@
     padding: 0 20px;
     background-color: #1e1e1e;
     border-bottom: 1px solid #333;
+    user-select: none;
+    -webkit-user-select: none;
 
     button {
         font-size: 0.95rem;
@@ -53,6 +55,95 @@
         .status.dnd {
             background-color: #c05151;
         }
+
+        h4 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0;
+            padding: 0px 20px 0px 1px;
+            
+            border-right: 1px solid #333;
+
+        }
+
+        ul.headerbar__left__list {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+            width: auto;
+            height: 100%;
+            list-style: none;
+            margin: 0;
+            padding: 0px 0px 0px 15px;
+
+            li {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 10px;
+                width: auto;
+                height: 100%;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+
+                a.add-link{
+                    color: #fff;
+                    background-color: rgb(74, 145, 74);
+
+                    &:hover {
+                        background-color: rgb(74, 145, 74);
+                    }
+
+                }
+
+                a {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px;
+                    width: auto;
+                    list-style: none;
+                    margin: 0;
+                    text-decoration: none;
+                    color: #ffffffb0;
+                    font-size: 0.96rem;
+                    transition: color 0.2s ease-in-out;
+                    border-radius: 5px;
+                    padding: 1px 10px;
+
+                    &:hover {
+                        color: #fff;
+                        background-color: #333;
+                    }
+
+                    img {
+                        width: 25px;
+                        height: 25px;
+                        object-fit: contain;
+                    }
+
+                    span {
+                        font-size: 0.95rem;
+                    }
+                }
+
+            }
+
+            form {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: auto;
+                margin: 0;
+                padding: 0;
+            }
+        }
+
     }
 
     .headerbar__right {

@@ -14,7 +14,7 @@ export const Private = () => {
     }
     return (
         <div className="private">
-            <HeaderBar />
+            <HeaderBar type="private" />
             <Chat />
         </div>
     );
