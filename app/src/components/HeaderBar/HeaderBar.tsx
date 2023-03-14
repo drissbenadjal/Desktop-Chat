@@ -7,7 +7,7 @@ import CallLogo from '../../assets/icons/call.svg'
 import { Link } from 'react-router-dom'
 
 
-export const HeaderBar = ({ type }: { type: string }) => {
+export const HeaderBar = ({ type, onClick, LinkPage }: { type: string, onClick?: any, LinkPage: string }) => {
     if(type == "private") {
         return (
             <div className="headerbar">
@@ -55,29 +55,29 @@ export const HeaderBar = ({ type }: { type: string }) => {
                     <h4>Friends</h4>
                     <ul className='headerbar__left__list'>
                         <li>
-                            <Link to="/">
+                            <button onClick={() => onClick("online")} className={LinkPage == "online" ? "active" : ""}>
                                 Online
-                            </Link>
+                            </button>
                         </li>
                         <li>
-                            <Link to="/">
+                            <button onClick={() => onClick("all")} className={LinkPage == "all" ? "active" : ""}>
                                 All
-                            </Link>
+                            </button>
                         </li>
                         <li>
-                            <Link to="/">
+                            <button onClick={() => onClick("waiting")} className={LinkPage == "waiting" ? "active" : ""}>
                                 Waiting
-                            </Link>
+                            </button>
                         </li>
                         <li>
-                            <Link to="/">
+                            <button onClick={() => onClick("blocked")} className={LinkPage == "blocked" ? "active" : ""}>
                                 Blocked
-                            </Link>
+                            </button>
                         </li>
                         <li>
-                            <Link to="/" className='add-link'>
+                            <button onClick={() => onClick("requests")} className={LinkPage == "requests" ? "add-link active" : "add-link"}>
                                 Add Friend
-                            </Link>
+                            </button>
                         </li>
                     </ul>
                 </div>
