@@ -1,0 +1,188 @@
+.userslist {
+    max-width: 250px;
+    min-width: 250px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #212121;
+    padding: 25px 0px 20px 0px;
+    overflow-y: auto;
+    
+    &::-webkit-scrollbar {
+        width: 3px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #212121;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 5px;
+    }
+    
+    &::-webkit-scrollbar-thumb:hover {
+        background: #333;
+    }
+    
+    &::-webkit-scrollbar-thumb:active {
+        background: #333;
+    }
+
+    .userslist__head {
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        color: #ffffffcc;
+        font-weight: 600;
+        user-select: none;
+        -webkit-user-select: none;
+        padding: 0 15px;
+
+        h3 {
+            font-size: 0.8rem;
+            color: #ffffffcc;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .separtor {
+            display: inline-block;
+            width: 10px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            &::before {
+                content: "";
+                width: 100%;
+                height: 1px;
+                background-color: #ffffffcc;
+            }
+
+        }
+    }
+
+    .userslist__online{
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .userslist__offline{
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 5px;
+        margin-top: 15px;
+    }
+
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        gap: 5px;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0 10px;
+
+        li {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 5px;
+            width: 100%;
+            height: 40px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+
+            button {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 5px;
+                width: 100%;
+                height: 100%;
+                border: none;
+                border-radius: 5px;
+                background-color: transparent;
+                cursor: pointer;
+
+                &:hover {
+                    color: #fff;
+                    background-color: #333;
+                }
+
+                p{
+                    font-size: 0.9rem;
+                    color: #ffffffcc;
+                    font-weight: 600;
+                    margin: 0;
+                }
+
+                img {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+
+                
+
+                .status-container {
+                    position: relative;
+                    width: 33px;
+                    height: 33px;
+
+                    .status {
+                        position: absolute;
+                        bottom: 0px;
+                        right: 0px;
+                        width: 13.5px;
+                        height: 13.5px;
+                        border-radius: 50%;
+                        border: 2px solid #212121;
+                    }
+
+                    .status.online {
+                        background-color: #51c051;
+                    }
+
+                    .status.offline {
+                        background-color: #555;
+                    }
+
+                    .status.afk {
+                        background-color: #c0c051;
+                    }
+
+                    .status.dnd {
+                        background-color: #c05151;
+                    }
+
+                }
+            }
+        }
+    }
+}

@@ -4,6 +4,7 @@ import "./UtilsBar.scss";
 
 import { ChatStatus } from "../ChatStatus/ChatStatus";
 import CloseIcon from "../../assets/icons/close-svg.svg";
+import ArrowDownSquare from "../../assets/icons/arrow-down-square.svg";
 
 export const UtilsBar = ({ infos }: any) => {
   if (infos === "friends") {
@@ -20,7 +21,7 @@ export const UtilsBar = ({ infos }: any) => {
               to="/home"
               className={
                 useLocation().pathname === "/home" ||
-                  useLocation().pathname === "/"
+                useLocation().pathname === "/"
                   ? "active"
                   : ""
               }
@@ -28,7 +29,7 @@ export const UtilsBar = ({ infos }: any) => {
               <p>Friends</p>
             </Link>
             <Link
-              to="/Premium"
+              to="/premium"
               className={useLocation().pathname === "/premium" ? "active" : ""}
             >
               <p>Premium</p>
@@ -95,9 +96,36 @@ export const UtilsBar = ({ infos }: any) => {
   } else if (infos === "server") {
     return (
       <div className="utilsbar">
-        <h1>Server</h1>
+        <div className="utilsbar-header__server">
+          <button>
+            <p>Server Name</p>
+            <img src={ArrowDownSquare} alt="" />
+          </button>
+        </div>
+        <div className="utilsbar-chanels">
+          <div className="utilsbar-chanels__group">
+            <button className="action__header">
+              <img src={ArrowDownSquare} alt="" />
+              <p>Text Chanels</p>
+            </button>
+            <ul>
+              <li>
+                <button>
+                  <p># General</p>
+                </button>
+              </li>
+              <li>
+                <button>
+                  <p># General</p>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
         <ChatStatus />
       </div>
     );
+  } else {
+    return <></>;
   }
 };

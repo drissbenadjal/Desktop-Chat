@@ -10,6 +10,7 @@ import { Login } from "../Login/Login";
 import { Home } from "../Home/Home";
 import { Server } from "../Server/Server";
 import { Private } from "../Private/Private";
+import { Premium } from "../Premium/Premium";
 
 import "./View.scss";
 
@@ -53,6 +54,18 @@ export const View = ({ page }: any) => {
         <UtilsBar infos="friends" />
         <div className="View">
           <Private />
+        </div>
+      </main>
+      </>
+    );
+  } else if (page === "premium") {
+    return (
+      <>
+      <main>
+        <SideBar />
+        <UtilsBar infos="friends" />
+        <div className="View">
+          <Premium />
         </div>
       </main>
       </>

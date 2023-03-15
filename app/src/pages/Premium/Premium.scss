@@ -1,0 +1,22 @@
+.premium {
+    width: 100%;
+    height: 100%;
+  
+    .premium__content {
+      overflow: hidden;
+      width: 100%;
+      height: calc(100% - 50px);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      .container__soon{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+    }
+}
+  

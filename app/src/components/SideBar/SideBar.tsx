@@ -10,6 +10,7 @@ export const SideBar = () => {
       <ul>
         <li className={location.pathname === "/" ||
           location.pathname === "/home" ||
+          useLocation().pathname.includes("premium") ||
           useLocation().pathname.includes("private") ? "active" : ""}>
           <Link to="/" className="side-logo">
             <img className="" draggable="false" src={DashboardLogo} />

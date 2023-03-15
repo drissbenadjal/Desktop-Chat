@@ -7,7 +7,7 @@ import CallLogo from '../../assets/icons/call.svg'
 import { Link } from 'react-router-dom'
 
 
-export const HeaderBar = ({ type, onClick, LinkPage }: { type: string, onClick?: any, LinkPage: string }) => {
+export const HeaderBar = ({ type, onClick, LinkPage }: { type: string, onClick?: any, LinkPage?: string }) => {
     if (type == "private") {
         return (
             <div className="headerbar">
@@ -80,6 +80,30 @@ export const HeaderBar = ({ type, onClick, LinkPage }: { type: string, onClick?:
                             </button>
                         </li>
                     </ul>
+                </div>
+                <div className="headerbar__right">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        );
+    } else if (type == "premium") {
+        return (
+            <div className="headerbar">
+                <div className="headerbar__left">
+                    <h4>Premium</h4>
+                </div>
+                <div className="headerbar__right">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+        );
+    } else if (type == "server") {
+        return (
+            <div className="headerbar">
+                <div className="headerbar__left">
+                    <h4>Nom salon</h4>
                 </div>
                 <div className="headerbar__right">
                     <ul>
