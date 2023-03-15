@@ -4,8 +4,10 @@ import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  createHashRouter,
   Route,
   RouterProvider,
+  HashRouter,
 } from "react-router-dom";
 
 import { AuthContextProvider } from './Context/AuthContext';
@@ -16,7 +18,7 @@ import { DragBar } from './components/DragBar/DragBar';
 import './samples/node-api'
 import './index.scss'
 
-const router = createBrowserRouter(
+const rooter = createHashRouter(
   createRoutesFromElements([
     <Route path="/" element={<View />} />,
     <Route path="/home" element={<View page="home" />} />,
@@ -28,11 +30,12 @@ const router = createBrowserRouter(
   ])
 );
 
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthContextProvider>
       <DragBar />
-      <RouterProvider router={router}/>
+      <RouterProvider router={rooter}/>
     </AuthContextProvider>
   </React.StrictMode>,
 )
