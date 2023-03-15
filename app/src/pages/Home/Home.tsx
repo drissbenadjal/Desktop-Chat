@@ -24,14 +24,14 @@ export const Home = () => {
           ViewHome === "online"
             ? "online"
             : ViewHome === "all"
-            ? "all"
-            : ViewHome === "waiting"
-            ? "waiting"
-            : ViewHome === "blocked"
-            ? "blocked"
-            : ViewHome === "requests"
-            ? "requests"
-            : "online"
+              ? "all"
+              : ViewHome === "waiting"
+                ? "waiting"
+                : ViewHome === "blocked"
+                  ? "blocked"
+                  : ViewHome === "requests"
+                    ? "requests"
+                    : "online"
         }
       />
       <div className="home__content">

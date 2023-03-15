@@ -2,7 +2,10 @@ nav.side-nav {
     background-color: #110f11c7;
     height: 100%;
     max-width: 70px;
+    min-width: 70px;
     width: 100%;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     -webkit-user-select: none;
     display: flex;
@@ -71,7 +74,7 @@ nav.side-nav ul li {
     transition: background-color 0.15s ease-in-out, border-radius 0.3s ease-in-out;
 }
 
-nav.side-nav ul li a{
+nav.side-nav ul li a {
     width: auto;
     height: auto;
     display: flex;
@@ -87,11 +90,11 @@ nav.side-nav ul li.active {
     border-radius: 13px !important;
 }
 
-nav.side-nav ul li.active img{
+nav.side-nav ul li.active img {
     border-radius: 13px !important;
 }
 
-nav.side-nav ul li.active img{
+nav.side-nav ul li.active img {
     border-radius: 13px !important;
 }
 
@@ -104,15 +107,15 @@ nav.side-nav ul li:hover {
     border-radius: 13px;
 }
 
-nav.side-nav ul li:hover a{
+nav.side-nav ul li:hover a {
     border-radius: 13px !important;
 }
 
-nav.side-nav ul li.active a{
+nav.side-nav ul li.active a {
     border-radius: 13px !important;
 }
 
-nav.side-nav ul li:hover.profile img{
+nav.side-nav ul li:hover.profile img {
     border-radius: 13px;
 }
 
@@ -125,10 +128,11 @@ nav.side-nav ul li:active {
 nav.side-nav ul li img {
     height: 100%;
     width: 100%;
+    -o-object-fit: cover;
     object-fit: cover;
 }
 
-nav.side-nav ul li.profile img{
+nav.side-nav ul li.profile img {
     border-radius: 50%;
     transition: border-radius 0.3s ease-in-out;
 }

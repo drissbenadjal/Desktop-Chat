@@ -8,7 +8,9 @@ export const SideBar = () => {
   return (
     <nav className="side-nav">
       <ul>
-        <li className={location.pathname === "/" || location.pathname === "/home" || location.pathname === "/private/:id" ? "active" : ""}>
+        <li className={location.pathname === "/" ||
+          location.pathname === "/home" ||
+          useLocation().pathname.includes("private") ? "active" : ""}>
           <Link to="/" className="side-logo">
             <img className="" draggable="false" src={DashboardLogo} />
           </Link>

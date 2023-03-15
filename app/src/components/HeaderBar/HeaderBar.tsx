@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 
 export const HeaderBar = ({ type, onClick, LinkPage }: { type: string, onClick?: any, LinkPage: string }) => {
-    if(type == "private") {
+    if (type == "private") {
         return (
             <div className="headerbar">
                 <div className="headerbar__left">
@@ -87,5 +87,10 @@ export const HeaderBar = ({ type, onClick, LinkPage }: { type: string, onClick?:
                 </div>
             </div>
         );
+    } else {
+        return (
+            <>
+            </>
+        )
     }
 };

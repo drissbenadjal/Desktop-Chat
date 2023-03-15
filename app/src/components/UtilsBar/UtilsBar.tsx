@@ -9,18 +9,18 @@ export const UtilsBar = ({ infos }: any) => {
   if (infos === "friends") {
     return (
       <div className="utilsbar">
-      <div className="utilsbar-header">
-        <form action="">
-          <input type="text" placeholder="Search" />
-        </form>
-      </div>
+        <div className="utilsbar-header">
+          <form action="">
+            <input type="text" placeholder="Search" />
+          </form>
+        </div>
         <div className="utilsbar-container">
           <div className="utilsbar-action">
             <Link
               to="/home"
               className={
                 useLocation().pathname === "/home" ||
-                useLocation().pathname === "/"
+                  useLocation().pathname === "/"
                   ? "active"
                   : ""
               }
