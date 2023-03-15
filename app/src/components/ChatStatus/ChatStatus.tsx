@@ -16,7 +16,7 @@ export const ChatStatus = () => {
             <button>
               <div className="status-container">
                 <img
-                  src="https://media.valorant-api.com/playercards/aeb4ce01-4781-9330-43cb-b991d1122c99/smallart.png"
+                  src="https://i1.sndcdn.com/artworks-WOCEshLCo95Xb3eQ-bxJkqw-t500x500.jpg"
                   alt="logo"
                 />
                 <div className="status online"></div>
