@@ -11,8 +11,6 @@ export const Chat = () => {
     }
   };
 
-scrollToBottom();
-
   return (
     <>
       <div className="chat">
