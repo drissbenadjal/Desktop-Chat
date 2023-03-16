@@ -1,8 +1,11 @@
 import React, { createContext, useState, useEffect } from "react";
+import { getCookie, addCookie, removeCookie } from "../Utils/utilsCookies";
 
 export interface User {
   pseudo: string;
-  password: string;
+  tag: string;
+  uuid?: string;
+  pictureprofile?: string;
 }
 
 export interface AuthContextType {
@@ -10,6 +13,7 @@ export interface AuthContextType {
   user: User;
   login: (pseudo: string, password: string) => void;
   logout: () => void;
+  loginError: string;
 }
 
 export interface Props {
@@ -18,35 +22,71 @@ export interface Props {
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
-  user: { pseudo: "", password: "" },
+  user: { pseudo: "", tag: "", uuid: "", pictureprofile: "" },
   login: () => {},
   logout: () => {},
+  loginError: "",
 });
 
 const AuthContextProvider = ({ children }: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User>({ pseudo: "", password: "" });
+  const [user, setUser] = useState<User>({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
+  const [loginError, setLoginError] = useState<string>("");
 
   useEffect(() => {
-    // Check if user is logged in
-    // If so, set isAuthenticated to true
-    // You can use a library like JWT or Firebase Authentication to implement this
+    if (!getCookie("token")) return;
+    fetch("http://localhost:3001/api/validtoken", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+          'token': getCookie("token") as string
+      })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.token) {
+          setIsAuthenticated(true);
+          setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
+        }
+      }
+    );
   }, []);
 
-  const login = (pseudo: string, password: string) => {
-    if (pseudo.trim() !== "" && password.trim() !== "") {
-      setIsAuthenticated(true);
-      setUser({ pseudo, password });
+  const login = (email: string, password: string) => {
+    if (email.trim() !== "" && password.trim() !== "") {
+      fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+            'email': email,
+            'password': password
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.token) {
+            setIsAuthenticated(true);
+            setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
+            addCookie("token", data.token, 1);
+          } else {
+            setLoginError(data.message);
+            console.log(data.message)
+          }
+        });
     }
   };
 
   const logout = () => {
     setIsAuthenticated(false);
-    setUser({ pseudo: "", password: "" });
+    setUser({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError }}>
       {children}
     </AuthContext.Provider>
   );

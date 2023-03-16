@@ -22,66 +22,68 @@ export const View = ({ page }: any) => {
         <Login />
       </main>
     );
-  } else if (page === "home" || page === undefined) {
-    return (
-      <>
-      <main>
-        <SideBar />
-        <UtilsBar infos="friends" />
-        <div className="View">
-          <Home />
-        </div>
-      </main>
-      </>
-    );
-  } else if (page === "server") {
-    return (
-      <>
-      <main>
-        <SideBar />
-        <UtilsBar infos="server" />
-        <div className="View">
-          <Server />
-        </div>
-      </main>
-      </>
-    );
-  } else if (page === "private") {
-    return (
-      <>
-      <main>
-        <SideBar />
-        <UtilsBar infos="friends" />
-        <div className="View">
-          <Private />
-        </div>
-      </main>
-      </>
-    );
-  } else if (page === "premium") {
-    return (
-      <>
-      <main>
-        <SideBar />
-        <UtilsBar infos="friends" />
-        <div className="View">
-          <Premium />
-        </div>
-      </main>
-      </>
-    );
   } else {
-    return (
-      <>
-      <main>
-        <SideBar />
-        <div className="View">
-          <h1>404</h1>
-          <p>Page not found</p>
-          <Link to="/home">Go to home</Link>
-        </div>
-      </main>
-      </>
-    );
+    if (page === "home" || page === undefined) {
+      return (
+        <>
+          <main>
+            <SideBar />
+            <UtilsBar infos="friends" />
+            <div className="View">
+              <Home />
+            </div>
+          </main>
+        </>
+      );
+    } else if (page === "server") {
+      return (
+        <>
+          <main>
+            <SideBar />
+            <UtilsBar infos="server" />
+            <div className="View">
+              <Server />
+            </div>
+          </main>
+        </>
+      );
+    } else if (page === "private") {
+      return (
+        <>
+          <main>
+            <SideBar />
+            <UtilsBar infos="friends" />
+            <div className="View">
+              <Private />
+            </div>
+          </main>
+        </>
+      );
+    } else if (page === "premium") {
+      return (
+        <>
+          <main>
+            <SideBar />
+            <UtilsBar infos="friends" />
+            <div className="View">
+              <Premium />
+            </div>
+          </main>
+        </>
+      );
+    } else {
+      return (
+        <>
+          <main>
+            <SideBar />
+            <div className="View">
+              <h1>404</h1>
+              <p>Page not found</p>
+              <Link to="/home">Go to home</Link>
+            </div>
+          </main>
+        </>
+      );
+    }
   }
 };

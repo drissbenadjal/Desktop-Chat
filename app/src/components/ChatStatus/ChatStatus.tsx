@@ -1,4 +1,6 @@
+import React, { useContext } from "react";
 import "./ChatStatus.scss";
+import { AuthContext } from "../../Context/AuthContext";
 
 import SettingsIcon from "../../assets/icons/setting.svg";
 import MicIcon from "../../assets/icons/mic.svg";
@@ -7,6 +9,7 @@ import HeadphoneIcon from "../../assets/icons/headset-mic.svg";
 import HeadphoneOffIcon from "../../assets/icons/headset-mic-slash.svg";
 
 export const ChatStatus = () => {
+  const { user } = useContext(AuthContext);
   return (
     <div className="chat-status">
       <div className="chat-status__container">
@@ -16,14 +19,14 @@ export const ChatStatus = () => {
             <button>
               <div className="status-container">
                 <img
-                  src="https://i1.sndcdn.com/artworks-WOCEshLCo95Xb3eQ-bxJkqw-t500x500.jpg"
+                  src={user?.pictureprofile}
                   alt="logo"
                 />
                 <div className="status online"></div>
               </div>
               <div className="user-infos">
-                <p className="username">Username</p>
-                <p className="tag">#1234</p>
+                <p className="username">{user?.pseudo}</p>
+                <p className="tag">#{user?.tag}</p>
               </div>
             </button>
           </div>
