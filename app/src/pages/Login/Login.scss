@@ -4,21 +4,27 @@
     justify-content: space-between;
     width: 100%;
     height: 100%;
+    background-color: #141414;
 
     .left__container {
-        width: 45%;
+        position: relative;
+        width: 50%;
         height: 100%;
-        background-color: #181818;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
 
     .right__container {
-        width: 55%;
+        width: 50%;
         height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding-right: 10%;
 
         form {
             display: flex;

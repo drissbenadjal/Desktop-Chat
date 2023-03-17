@@ -1,12 +1,15 @@
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AuthContext } from "../../Context/AuthContext";
 
 import './Login.scss'
+import { BlobThree } from '../../components/Blob/Blob';
 
 export const Login = () => {
 
   const { login, loginError } = useContext(AuthContext);
+
+  const [hover, setHover] = useState(false as boolean);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -16,6 +19,7 @@ export const Login = () => {
   return (
     <div className="login">
       <div className='left__container'>
+        <BlobThree hoverBtn={hover} />
       </div>
       <div className='right__container'>
         <form action="" onSubmit={handleSubmit}>
@@ -33,7 +37,7 @@ export const Login = () => {
             <Link to="/">Forgot password ?</Link>
           </div>
           <div className="group-input">
-            <input type="submit" value="Login" />
+            <input type="submit" value="Login" onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)} />
           </div>
           {
             loginError && <p className="error">{loginError}</p>

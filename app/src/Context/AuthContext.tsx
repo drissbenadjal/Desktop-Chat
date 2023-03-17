@@ -9,6 +9,7 @@ export interface User {
 }
 
 export interface AuthContextType {
+  loading: boolean;
   isAuthenticated: boolean;
   user: User;
   login: (pseudo: string, password: string) => void;
@@ -23,6 +24,7 @@ export interface Props {
 }
 
 const AuthContext = createContext<AuthContextType>({
+  loading: true,
   isAuthenticated: false,
   user: { pseudo: "", tag: "", uuid: "", pictureprofile: "" },
   login: () => { },
@@ -33,6 +35,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthContextProvider = ({ children }: Props) => {
+  const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User>({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
   const [loginError, setLoginError] = useState<string>("");
@@ -55,6 +58,7 @@ const AuthContextProvider = ({ children }: Props) => {
           setIsAuthenticated(true);
           setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
         }
+        setLoading(false);
       }
       );
   }, []);
@@ -114,7 +118,7 @@ const AuthContextProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError, signup, signupError }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError, signup, signupError, loading }}>
       {children}
     </AuthContext.Provider>
   );

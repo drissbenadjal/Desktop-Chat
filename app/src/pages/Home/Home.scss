@@ -20,6 +20,21 @@
       align-items: flex-start;
       gap: 5px;
 
+      .none-data{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px 30px;
+
+        h3{
+          font-size: 1rem;
+          color: #fff;
+          font-weight: 600;
+          margin: 0;
+        }
+      }
+
       .home__content__left__header{
         width: 100%;
         height: auto;
