@@ -37,7 +37,7 @@ app.get("*", (req, res) => {
   res.status(404).json({ message: "Not allowed" });
 });
 
-app.post("/api/signin", (req, res) => {
+app.post("/api/signup", (req, res) => {
   let pseudo = req.body.pseudo;
   let email = req.body.email;
   let password = req.body.password;
@@ -55,25 +55,25 @@ app.post("/api/signin", (req, res) => {
             res.status(300).json({ message: "Email déjà utilisé" });
           } else {
             bcrypt.hash(password, 10, (err, hash) => {
-            let id = uuid.v4();
-            let tag = Math.floor(1000 + Math.random() * 9000);
-            let secret =
-              Math.random().toString(36).substring(2, 15) +
-              Math.random().toString(36).substring(2, 15);
-            let pp = ["https://digitagava.com/dashboard/img/pp/pprose3.png", "https://digitagava.com/dashboard/img/pp/pprose1.png", "https://digitagava.com/dashboard/img/pp/pprose2.png", "https://digitagava.com/dashboard/img/pp/default.png"];
-            let random = Math.floor(Math.random() * pp.length);
-            let avatar = pp[random];
-            db.query(
-              "INSERT INTO users (uuid, pseudo, tag, email, password, secret, pictureprofile) VALUES (?, ?, ?, ?, ?, ?, ?)",
-              [id, pseudo, tag, email, hash, secret, avatar],
-              (err, result) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  res.status(201).json({ message: "Utilisateur créé" });
+              let id = uuid.v4();
+              let tag = Math.floor(1000 + Math.random() * 9000);
+              let secret =
+                Math.random().toString(36).substring(2, 15) +
+                Math.random().toString(36).substring(2, 15);
+              let pp = ["https://digitagava.com/dashboard/img/pp/pprose3.png", "https://digitagava.com/dashboard/img/pp/pprose1.png", "https://digitagava.com/dashboard/img/pp/pprose2.png", "https://digitagava.com/dashboard/img/pp/default.png"];
+              let random = Math.floor(Math.random() * pp.length);
+              let avatar = pp[random];
+              db.query(
+                "INSERT INTO users (uuid, pseudo, tag, email, password, secret, pictureprofile) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                [id, pseudo, tag, email, hash, secret, avatar],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    res.status(201).json({ status: "create", message: "Utilisateur créé" });
+                  }
                 }
-              }
-            );
+              );
             });
           }
         }
@@ -151,38 +151,38 @@ app.post("/api/private", (req, res) => {
     let uuid = req.body.uuid;
     let uuid2 = req.body.uuid2;
     if (id === uuid || id === uuid2) {
-    db.query(
-      "SELECT * FROM users WHERE uuid = ?",
-      [id],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        if (result.length > 0) {
-          let secret = result[0].secret;
-          jwt.verify(token, secret, (err, decoded) => {
-            if (err) {
-              res.status(300).json({ message: "Token invalide" });
-            } else {
-              req.user = decoded;
-              db.query(
-                "SELECT * FROM private WHERE uuid = ? OR uuid = ?",
-                [uuid + " " + uuid2, uuid2 + " " + uuid],
-                (err, result) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    res.status(200).json(result);
+      db.query(
+        "SELECT * FROM users WHERE uuid = ?",
+        [id],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          if (result.length > 0) {
+            let secret = result[0].secret;
+            jwt.verify(token, secret, (err, decoded) => {
+              if (err) {
+                res.status(300).json({ message: "Token invalide" });
+              } else {
+                req.user = decoded;
+                db.query(
+                  "SELECT * FROM private WHERE uuid = ? OR uuid = ?",
+                  [uuid + " " + uuid2, uuid2 + " " + uuid],
+                  (err, result) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      res.status(200).json(result);
+                    }
                   }
-                }
-              );
-            }
-          });
-        } else {
-          res.status(300).json({ message: "Token invalide" });
+                );
+              }
+            });
+          } else {
+            res.status(300).json({ message: "Token invalide" });
+          }
         }
-      }
-    );
+      );
     } else {
       res.status(300).json({ message: "Token invalide" });
     }
@@ -199,38 +199,38 @@ app.post("/api/private/send", (req, res) => {
     let uuid2 = req.body.uuid2;
     let message = req.body.message;
     if (id === uuid || id === uuid2) {
-    db.query(
-      "SELECT * FROM users WHERE uuid = ?",
-      [id],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-        }
-        if (result.length > 0) {
-          let secret = result[0].secret;
-          jwt.verify(token, secret, (err, decoded) => {
-            if (err) {
-              res.status(300).json({ message: "Token invalide" });
-            } else {
-              req.user = decoded;
-              db.query(
-                "INSERT INTO private (uuid, uuid2, message) VALUES (?, ?, ?)",
-                [uuid + " " + uuid2, message],
-                (err, result) => {
-                  if (err) {
-                    console.log(err);
-                  } else {
-                    res.status(200).json({ message: "Message envoyé" });
+      db.query(
+        "SELECT * FROM users WHERE uuid = ?",
+        [id],
+        (err, result) => {
+          if (err) {
+            console.log(err);
+          }
+          if (result.length > 0) {
+            let secret = result[0].secret;
+            jwt.verify(token, secret, (err, decoded) => {
+              if (err) {
+                res.status(300).json({ message: "Token invalide" });
+              } else {
+                req.user = decoded;
+                db.query(
+                  "INSERT INTO private (uuid, uuid2, message) VALUES (?, ?, ?)",
+                  [uuid + " " + uuid2, message],
+                  (err, result) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      res.status(200).json({ message: "Message envoyé" });
+                    }
                   }
-                }
-              );
-            }
-          });
-        } else {
-          res.status(300).json({ message: "Token invalide" });
+                );
+              }
+            });
+          } else {
+            res.status(300).json({ message: "Token invalide" });
+          }
         }
-      }
-    );
+      );
     } else {
       res.status(300).json({ message: "Token invalide" });
     }

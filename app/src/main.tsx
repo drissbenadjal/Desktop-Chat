@@ -21,6 +21,7 @@ import './index.scss'
 const rooter = createHashRouter(
   createRoutesFromElements([
     <Route path="/" element={<View />} />,
+    <Route path="/signup" element={<View page="signup" />} />,
     <Route path="/home" element={<View page="home" />} />,
     <Route path="/server" element={<View page="server" />} />,
     <Route path="/server/:id" element={<View page="server" />} />,
@@ -35,7 +36,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <AuthContextProvider>
       <DragBar />
-      <RouterProvider router={rooter}/>
+      <RouterProvider router={rooter} />
     </AuthContextProvider>
   </React.StrictMode>,
 )

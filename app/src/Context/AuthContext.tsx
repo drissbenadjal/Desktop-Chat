@@ -14,6 +14,8 @@ export interface AuthContextType {
   login: (pseudo: string, password: string) => void;
   logout: () => void;
   loginError: string;
+  signup: (pseudo: string, email: string, password: string) => void;
+  signupError: string;
 }
 
 export interface Props {
@@ -23,15 +25,18 @@ export interface Props {
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: { pseudo: "", tag: "", uuid: "", pictureprofile: "" },
-  login: () => {},
-  logout: () => {},
+  login: () => { },
+  logout: () => { },
   loginError: "",
+  signup: () => { },
+  signupError: ""
 });
 
 const AuthContextProvider = ({ children }: Props) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User>({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
   const [loginError, setLoginError] = useState<string>("");
+  const [signupError, setsignupError] = useState<string>("");
 
   useEffect(() => {
     if (!getCookie("token")) return;
@@ -41,7 +46,7 @@ const AuthContextProvider = ({ children }: Props) => {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: new URLSearchParams({
-          'token': getCookie("token") as string
+        'token': getCookie("token") as string
       })
     })
       .then((res) => res.json())
@@ -51,7 +56,7 @@ const AuthContextProvider = ({ children }: Props) => {
           setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
         }
       }
-    );
+      );
   }, []);
 
   const login = (email: string, password: string) => {
@@ -62,8 +67,8 @@ const AuthContextProvider = ({ children }: Props) => {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-            'email': email,
-            'password': password
+          'email': email,
+          'password': password
         })
       })
         .then((res) => res.json())
@@ -74,7 +79,30 @@ const AuthContextProvider = ({ children }: Props) => {
             addCookie("token", data.token, 1);
           } else {
             setLoginError(data.message);
-            console.log(data.message)
+          }
+        });
+    }
+  };
+
+  const signup = (pseudo: string, email: string, password: string) => {
+    if (pseudo.trim() !== "" && email.trim() !== "" && password.trim() !== "") {
+      fetch("http://localhost:3001/api/signup", {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          'pseudo': pseudo,
+          'email': email,
+          'password': password
+        })
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.status === "create") {
+            setsignupError(data.message);
+          } else {
+            setsignupError(data.message);
           }
         });
     }
@@ -86,7 +114,7 @@ const AuthContextProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError, signup, signupError }}>
       {children}
     </AuthContext.Provider>
   );

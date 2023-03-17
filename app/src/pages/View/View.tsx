@@ -7,6 +7,7 @@ import { SideBar } from "@/components/SideBar/SideBar";
 import { UtilsBar } from "@/components/UtilsBar/UtilsBar";
 
 import { Login } from "../Login/Login";
+import { Signup } from "../Signup/Signup";
 import { Home } from "../Home/Home";
 import { Server } from "../Server/Server";
 import { Private } from "../Private/Private";
@@ -17,11 +18,21 @@ import "./View.scss";
 export const View = ({ page }: any) => {
   const { isAuthenticated, user } = useContext(AuthContext);
   if (!isAuthenticated) {
-    return (
-      <main>
-        <Login />
-      </main>
-    );
+    if (page === "signup") {
+      return (
+        <>
+          <main>
+            <Signup />
+          </main>
+        </>
+      );
+    } else {
+      return (
+        <main>
+          <Login />
+        </main>
+      );
+    }
   } else {
     if (page === "home" || page === undefined) {
       return (
