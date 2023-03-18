@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
 import { getCookie } from "@/Utils/utilsCookies";
 
 import "./UtilsBar.scss";
@@ -9,33 +10,38 @@ import CloseIcon from "../../assets/icons/close-svg.svg";
 import ArrowDownSquare from "../../assets/icons/arrow-down-square.svg";
 
 export const UtilsBar = ({ infos }: any) => {
+  const { logout } = useContext(AuthContext);
 
   const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
-  
-  const fetchCurrentPrivateChat = () => {
-    fetch(`http://localhost:3001/api/private/current`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        token: getCookie("token") as string,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCurrentPrivateChat(data);
-        console.log(data);
-      });
-  };
+
+  // const fetchCurrentPrivateChat = () => {
+  //   fetch(`http://localhost:3001/api/private/current`, {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/x-www-form-urlencoded",
+  //     },
+  //     body: new URLSearchParams({
+  //       token: getCookie("token") as string,
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       if (data.message === "Token invalide") {
+  //         logout();
+  //       } else {
+  //         setCurrentPrivateChat(data);
+  //         console.log(data);
+  //       }
+  //     });
+  // };
+  // useEffect(() => {
+  //   fetchCurrentPrivateChat();
+  //   setInterval(() => {
+  //     fetchCurrentPrivateChat();
+  //   }, 1000);
+  // }, [getCookie("token")]);
 
   if (infos === "friends") {
-    useEffect(() => {
-      fetchCurrentPrivateChat();
-      setInterval(() => {
-        fetchCurrentPrivateChat();
-      }, 1000);
-    }, []);
     return (
       <div className="utilsbar">
         <div className="utilsbar-header">
@@ -76,21 +82,20 @@ export const UtilsBar = ({ infos }: any) => {
             </div>
             <div className="utilsbar-friend__bottom">
               <ul>
-                {
-                  currentPrivateChat && currentPrivateChat.map((chat: any) => {
+                {currentPrivateChat &&
+                  currentPrivateChat.map((chat: any) => {
                     return (
                       <li
                         key={chat.uuid}
                         className={
-                          useLocation().pathname === `/private/${chat.uuid}` ? "active-pm" : ""
+                          useLocation().pathname === `/private/${chat.uuid}`
+                            ? "active-pm"
+                            : ""
                         }
                       >
                         <Link to={`/private/${chat.uuid}`}>
                           <div className="status-container">
-                            <img
-                              src={chat.pictureprofile}
-                              alt="logo"
-                            />
+                            <img src={chat.pictureprofile} alt="logo" />
                             <div className={`status ${chat.status}`}></div>
                           </div>
                           <p>{chat.pseudo}</p>
@@ -100,8 +105,7 @@ export const UtilsBar = ({ infos }: any) => {
                         </button>
                       </li>
                     );
-                  })
-                }
+                  })}
               </ul>
             </div>
           </div>

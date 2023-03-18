@@ -42,7 +42,10 @@ const AuthContextProvider = ({ children }: Props) => {
   const [signupError, setsignupError] = useState<string>("");
 
   useEffect(() => {
-    if (!getCookie("token")) return;
+    if (!getCookie("token")) {
+      setLoading(false);
+      return;
+    };
     fetch("http://localhost:3001/api/validtoken", {
       method: "POST",
       headers: {
