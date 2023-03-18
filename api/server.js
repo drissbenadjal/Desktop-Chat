@@ -204,6 +204,58 @@ app.post("/api/private", (req, res) => {
   }
 });
 
+app.post("/api/private/current", (req, res) => {
+  let token = req.body.token;
+  if (token) {
+    let id = jwt.decode(token).id;
+    db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (result.length > 0) {
+        let secret = result[0].secret;
+        jwt.verify(token, secret, (err, decoded) => {
+          if (err) {
+            res.status(300).json({ message: "Token invalide" });
+          } else {
+            req.user = decoded;
+            db.query(
+              "SELECT * FROM current_private WHERE uuid_first = ?",
+              [id],
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (result.length > 0) {
+                    db.query(
+                      "SELECT * FROM users WHERE uuid = ?",
+                      [result[0].uuid_second],
+                      (err, result2) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          res.status(200).json([{ pseudo: result2[0].pseudo, tag: result2[0].tag, uuid: result2[0].uuid, pictureprofile: result2[0].pictureprofile, status: result2[0].status }]);
+                        }
+                      }
+                    );
+                  } else {
+                    res.status(200).json({ message: "Aucun utilisateur" });
+                  }
+                }
+              }
+            );
+          }
+        });
+      } else {
+        res.status(300).json({ message: "Token invalide" });
+      }
+    });
+  } else {
+    res.status(300).json({ message: "Token invalide" });
+  }
+});
+
+
 app.post("/api/private/send", (req, res) => {
   let token = req.body.token;
   if (token) {
@@ -495,6 +547,143 @@ app.post("/api/friends/request/blocked", (req, res) => {
                     );
                   } else {
                     res.status(200).json({ number: 0 });
+                  }
+                }
+              }
+            );
+          }
+        });
+      } else {
+        res.status(300).json({ message: "Token invalide" });
+      }
+    });
+  } else {
+    res.status(300).json({ message: "Token invalide" });
+  }
+});
+
+app.post("/api/friends/request/send", (req, res) => {
+  let token = req.body.token;
+  let name = req.body.pseudo;
+  let tag = req.body.tag;
+  if (token) {
+    let id = jwt.decode(token).id;
+    db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (result.length > 0) {
+        let secret = result[0].secret;
+        jwt.verify(token, secret, (err, decoded) => {
+          if (err) {
+            res.status(300).json({ message: "Token invalide" });
+          } else {
+            req.user = decoded;
+            db.query(
+              "SELECT * FROM users WHERE pseudo = ? AND tag = ?",
+              [name, tag],
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (result.length > 0) {
+                    let receiver = result[0].uuid;
+                    db.query(
+                      "SELECT * FROM friends_requests WHERE sender = ? AND receiver = ?",
+                      [id, receiver],
+                      (err, result) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          if (result.length > 0) {
+                            res.status(300).json({
+                              message: "Vous avez déjà envoyé une demande",
+                            });
+                          } else {
+                            db.query(
+                              "SELECT * FROM friends_requests WHERE sender = ? AND receiver = ?",
+                              [receiver, id],
+                              (err, result) => {
+
+                                if (err) {
+                                  console.log(err);
+                                } else {
+                                  if (result.length > 0) {
+                                    res.status(300).json({
+                                      message: "Vous avez déjà envoyé une demande",
+                                    });
+                                  } else {
+                                    db.query(
+                                      "SELECT * FROM friends WHERE uuid_first = ? AND uuid_second = ?",
+                                      [id, receiver],
+                                      (err, result) => {
+                                        if (err) {
+                                          console.log(err);
+                                        } else {
+                                          if (result.length > 0) {
+                                            res.status(300).json({
+                                              message: "Vous êtes déjà amis",
+                                            });
+                                          } else {
+                                            db.query(
+                                              "SELECT * FROM blocked WHERE blocker = ? AND blocked = ?",
+                                              [id, receiver],
+                                              (err, result) => {
+                                                if (err) {
+                                                  console.log(err);
+                                                } else {
+                                                  if (result.length > 0) {
+                                                    res.status(300).json({
+                                                      message: "Vous avez bloqué cette personne",
+                                                    });
+                                                  } else {
+                                                    db.query(
+                                                      "SELECT * FROM blocked WHERE blocker = ? AND blocked = ?",
+                                                      [receiver, id],
+                                                      (err, result) => {
+                                                        if (err) {
+                                                          console.log(err);
+                                                        } else {
+                                                          if (result.length > 0) {
+                                                            res.status(300).json({
+                                                              message: "Cette personne vous a bloqué",
+                                                            });
+                                                          } else {
+                                                            db.query(
+                                                              "INSERT INTO friends_requests (sender, receiver) VALUES (?, ?)",
+                                                              [id, receiver],
+                                                              (err, result) => {
+                                                                if (err) {
+                                                                  console.log(err);
+                                                                } else {
+                                                                  res.status(200).json({
+                                                                    message: "Demande envoyée",
+                                                                  });
+                                                                }
+                                                              }
+                                                            );
+                                                          }
+                                                        }
+                                                      }
+                                                    );
+                                                  }
+                                                }
+                                              }
+                                            );
+                                          }
+                                        }
+                                      }
+                                    );
+                                  }
+                                }
+                              }
+                            );
+                          }
+                        }
+                      }
+                    );
+                  } else {
+                    res.status(300).json({ message: "Utilisateur introuvable" });
                   }
                 }
               }

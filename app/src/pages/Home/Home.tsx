@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { HeaderBar } from "@/components/HeaderBar/HeaderBar";
+import { AuthContext } from "../../Context/AuthContext";
 import { getCookie } from "@/Utils/utilsCookies";
 import "./Home.scss";
 
@@ -9,9 +10,13 @@ import MoreLogo from "../../assets/icons/more.svg";
 import CloseLogo from "../../assets/icons/close-svg.svg";
 
 export const Home = () => {
+
+  const { logout } = useContext(AuthContext);
+
   const [count, setCount] = useState(0);
   const [ViewHome, setViewHome] = useState("online");
   const [Data, setData] = useState([]);
+  const [addMessage, setAddMessage] = useState("");
 
   const handleView = (view: string) => {
     setViewHome(view);
@@ -29,7 +34,9 @@ export const Home = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.number === 0) {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.number === 0) {
         } else {
           setData(data);
           setCount(data.length);
@@ -49,7 +56,9 @@ export const Home = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.number === 0) {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.number === 0) {
         } else {
           setData(data);
           setCount(data.length);
@@ -69,7 +78,9 @@ export const Home = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.number === 0) {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.number === 0) {
         } else {
           setData(data);
           setCount(data.length);
@@ -89,13 +100,50 @@ export const Home = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.number === 0) {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.number === 0) {
           console.log("error");
         } else {
           setData(data);
           setCount(data.length);
         }
       });
+  };
+
+  const sendRequest = async (e: any) => {
+    e.preventDefault();
+    const pseudo = e.target.pseudotag.value.split("#")[0];
+    const tag = e.target.pseudotag.value.split("#")[1];
+    console.log(pseudo, tag);
+    fetch("http://localhost:3001/api/friends/request/send", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+        pseudo: pseudo,
+        tag: tag,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Token invalide") {
+          logout();
+        } else {
+          setAddMessage(data.message);
+        }
+      });
+  };
+
+  const BtnRequest = useRef<HTMLButtonElement>(null);
+  const handleChange = (e: any) => {
+    if (e.target.value.match(/^[a-zA-Z0-9]+#[0-9]{4}$/)) {
+      BtnRequest.current!.disabled = false;
+    } else {
+      BtnRequest.current!.disabled = true;
+    }
   };
 
   useEffect(() => {
@@ -116,7 +164,7 @@ export const Home = () => {
       setData([]);
       fetchBlocked();
     } else if (ViewHome === "requests") {
-      
+      setAddMessage("");
     }
   }, [ViewHome]);
 
@@ -339,14 +387,15 @@ export const Home = () => {
                     ADD FRIENDS <span>+</span>
                   </h2>
                   <p>Add friends by username and tag.</p>
-                  <form action="">
-                    <input type="text" placeholder="Enter username#0000" />
-                    <input type="submit" value="Send friend request" disabled />
+                  <form onSubmit={sendRequest}>
+                    <input type="text" placeholder="Enter username#0000" id="pseudotag" onChange={handleChange} />
+                    <input type="submit" value="Send friend request" ref={BtnRequest as any} disabled />
                   </form>
+                  <p>{addMessage}</p>
                 </div>
               </>
             ) : (
-              <h1>Online</h1>
+              <></>
             )
           }
         </div>

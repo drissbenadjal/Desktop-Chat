@@ -1,4 +1,6 @@
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { getCookie } from "@/Utils/utilsCookies";
 
 import "./UtilsBar.scss";
 
@@ -7,7 +9,33 @@ import CloseIcon from "../../assets/icons/close-svg.svg";
 import ArrowDownSquare from "../../assets/icons/arrow-down-square.svg";
 
 export const UtilsBar = ({ infos }: any) => {
+
+  const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
+  
+  const fetchCurrentPrivateChat = () => {
+    fetch(`http://localhost:3001/api/private/current`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrentPrivateChat(data);
+        console.log(data);
+      });
+  };
+
   if (infos === "friends") {
+    useEffect(() => {
+      fetchCurrentPrivateChat();
+      setInterval(() => {
+        fetchCurrentPrivateChat();
+      }, 1000);
+    }, []);
     return (
       <div className="utilsbar">
         <div className="utilsbar-header">
@@ -48,44 +76,32 @@ export const UtilsBar = ({ infos }: any) => {
             </div>
             <div className="utilsbar-friend__bottom">
               <ul>
-                <li
-                  className={
-                    useLocation().pathname === "/private/1" ? "active-pm" : ""
-                  }
-                >
-                  <Link to="/private/1">
-                    <div className="status-container">
-                      <img
-                        src="https://i1.sndcdn.com/artworks-WOCEshLCo95Xb3eQ-bxJkqw-t500x500.jpg"
-                        alt="logo"
-                      />
-                      <div className="status dnd"></div>
-                    </div>
-                    <p>Username</p>
-                  </Link>
-                  <button className="close-pm">
-                    <img src={CloseIcon} alt="" />
-                  </button>
-                </li>
-                <li
-                  className={
-                    useLocation().pathname === "/private/2" ? "active-pm" : ""
-                  }
-                >
-                  <Link to="/private/2">
-                    <div className="status-container">
-                      <img
-                        src="https://i1.sndcdn.com/artworks-WOCEshLCo95Xb3eQ-bxJkqw-t500x500.jpg"
-                        alt="logo"
-                      />
-                      <div className="status online"></div>
-                    </div>
-                    <p>Username</p>
-                  </Link>
-                  <button className="close-pm">
-                    <img src={CloseIcon} alt="" />
-                  </button>
-                </li>
+                {
+                  currentPrivateChat && currentPrivateChat.map((chat: any) => {
+                    return (
+                      <li
+                        key={chat.uuid}
+                        className={
+                          useLocation().pathname === `/private/${chat.uuid}` ? "active-pm" : ""
+                        }
+                      >
+                        <Link to={`/private/${chat.uuid}`}>
+                          <div className="status-container">
+                            <img
+                              src={chat.pictureprofile}
+                              alt="logo"
+                            />
+                            <div className={`status ${chat.status}`}></div>
+                          </div>
+                          <p>{chat.pseudo}</p>
+                        </Link>
+                        <button className="close-pm">
+                          <img src={CloseIcon} alt="" />
+                        </button>
+                      </li>
+                    );
+                  })
+                }
               </ul>
             </div>
           </div>

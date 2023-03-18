@@ -115,6 +115,7 @@ const AuthContextProvider = ({ children }: Props) => {
   const logout = () => {
     setIsAuthenticated(false);
     setUser({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
+    removeCookie("token");
   };
 
   return (
