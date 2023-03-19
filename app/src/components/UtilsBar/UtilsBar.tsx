@@ -14,34 +14,28 @@ export const UtilsBar = ({ infos }: any) => {
 
   const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
 
-  // const fetchCurrentPrivateChat = () => {
-  //   fetch(`http://localhost:3001/api/private/current`, {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //     body: new URLSearchParams({
-  //       token: getCookie("token") as string,
-  //     }),
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       if (data.message === "Token invalide") {
-  //         logout();
-  //       } else {
-  //         setCurrentPrivateChat(data);
-  //         console.log(data);
-  //       }
-  //     });
-  // };
-  // useEffect(() => {
-  //   fetchCurrentPrivateChat();
-  //   setInterval(() => {
-  //     fetchCurrentPrivateChat();
-  //   }, 1000);
-  // }, [getCookie("token")]);
+  const fetchCurrentPrivateChat = () => {
+    fetch(`http://localhost:3001/api/private/current`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Token invalide") {
+          logout();
+        } else {
+          setCurrentPrivateChat(data);
+        }
+      });
+  };
 
   if (infos === "friends") {
+    fetchCurrentPrivateChat();
     return (
       <div className="utilsbar">
         <div className="utilsbar-header">
@@ -83,10 +77,10 @@ export const UtilsBar = ({ infos }: any) => {
             <div className="utilsbar-friend__bottom">
               <ul>
                 {currentPrivateChat &&
-                  currentPrivateChat.map((chat: any) => {
+                  currentPrivateChat.map((chat: any, index: number) => {
                     return (
                       <li
-                        key={chat.uuid}
+                        key={index}
                         className={
                           useLocation().pathname === `/private/${chat.uuid}`
                             ? "active-pm"

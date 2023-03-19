@@ -13,14 +13,13 @@ export const Server = () => {
     if (id === undefined) {
       navigate("/home");
     }
-    console.log(id);
   }, [id]);
   return (
     <div className="server">
     <HeaderBar type="server" />
       <div className="server__content">
         <div className="server__content__left">
-            <Chat />
+            <Chat serverId={id}/>
         </div>
         <div className="server__content__right">
             <UsersList />

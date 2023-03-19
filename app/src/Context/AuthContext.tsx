@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getCookie, addCookie, removeCookie } from "../Utils/utilsCookies";
+import io from "socket.io-client";
 
 export interface User {
   pseudo: string;
@@ -35,6 +36,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthContextProvider = ({ children }: Props) => {
+  const socket = io("http://localhost:3001");
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User>({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
@@ -60,10 +62,14 @@ const AuthContextProvider = ({ children }: Props) => {
         if (data.token) {
           setIsAuthenticated(true);
           setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
+          socket.emit("token", getCookie("token"));
+        } else {
+          socket.emit("tokenlogout", getCookie("token"));
+          removeCookie("token");
         }
         setLoading(false);
       }
-      );
+    );
   }, []);
 
   const login = (email: string, password: string) => {
@@ -84,6 +90,7 @@ const AuthContextProvider = ({ children }: Props) => {
             setIsAuthenticated(true);
             setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
             addCookie("token", data.token, 1);
+            socket.emit("token", getCookie("token"));
           } else {
             setLoginError(data.message);
           }
@@ -116,6 +123,7 @@ const AuthContextProvider = ({ children }: Props) => {
   };
 
   const logout = () => {
+    socket.emit("tokenlogout", getCookie("token"));
     setIsAuthenticated(false);
     setUser({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
     removeCookie("token");

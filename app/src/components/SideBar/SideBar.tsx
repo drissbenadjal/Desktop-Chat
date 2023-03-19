@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./SideBar.scss";
 
 import DashboardLogo from "../../assets/icons/dashboard.svg";
@@ -8,10 +8,12 @@ export const SideBar = () => {
   return (
     <nav className="side-nav">
       <ul>
-        <li className={location.pathname === "/" ||
+        <li className={
+          location.pathname === "/" ||
           location.pathname === "/home" ||
-          useLocation().pathname.includes("premium") ||
-          useLocation().pathname.includes("private") ? "active" : ""}>
+          location.pathname.includes("/premium") ||
+          location.pathname.includes("/private/") ? "active" : ""
+          }>
           <Link to="/" className="side-logo">
             <img className="" draggable="false" src={DashboardLogo} />
           </Link>
@@ -20,7 +22,7 @@ export const SideBar = () => {
       <ul>
         <li
           className={
-            location.pathname === "/server/1" ? "profile active" : "profile"
+            location.pathname.includes("/server/") ? "profile active" : "profile"
           }
         >
           <Link to="/server/1">
