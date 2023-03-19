@@ -14,9 +14,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
   console.log(userFriends, serverId);
 
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      console.log("scroll");
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   // const fetchPrivateChat = () => {
@@ -49,7 +47,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
     return (
       <>
         <div className="chat">
-          <div className="message-container" ref={messagesEndRef}>
+          <div className="message-container">
             {currentPrivateChat &&
               currentPrivateChat.map((message: any, index: number) => {
                 return (
@@ -80,6 +78,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
                   </div>
                 );
               })}
+            <div className="message-end" ref={messagesEndRef}></div>
           </div>
         </div>
         <ChatBar />
@@ -89,7 +88,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
     return (
       <>
         <div className="chat">
-          <div className="message-container" ref={messagesEndRef}>
+          <div className="message-container">
             <div className="message">
               <div className="message__left">
                 <div className="message__left__avatar">
@@ -113,6 +112,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
                 </div>
               </div>
             </div>
+            <div className="message-end" ref={messagesEndRef}></div>
           </div>
         </div>
         <ChatBar />
