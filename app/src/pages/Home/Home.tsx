@@ -41,6 +41,9 @@ export const Home = () => {
           setData(data);
           setCount(data.length);
         }
+      })
+      .catch((err) => {
+          
       });
   };
 
@@ -63,6 +66,9 @@ export const Home = () => {
           setData(data);
           setCount(data.length);
         }
+      })
+      .catch((err) => {
+        
       });
   };
 
@@ -85,6 +91,9 @@ export const Home = () => {
           setData(data);
           setCount(data.length);
         }
+      })
+      .catch((err) => {
+          
       });
   };
 
@@ -108,6 +117,9 @@ export const Home = () => {
           setData(data);
           setCount(data.length);
         }
+      })
+      .catch((err) => {
+          
       });
   };
 
@@ -134,6 +146,9 @@ export const Home = () => {
         } else {
           setAddMessage(data.message);
         }
+      })
+      .catch((err) => {
+          
       });
   };
 

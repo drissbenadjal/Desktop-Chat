@@ -11,13 +11,14 @@ export const Chat = ({ userFriends, serverId }: any) => {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  console.log(userFriends, serverId);
+  // console.log(userFriends, serverId);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // const fetchPrivateChat = () => {
+  const fetchPrivateChat = () => {
+    console.log("fetch " + userFriends);
   // fetch(`http://localhost:3001/api/private`, {
   //   method: "POST",
   //   headers: {
@@ -41,9 +42,33 @@ export const Chat = ({ userFriends, serverId }: any) => {
   //     console.log(data);
   //   });
   //   console.log(userFriends);
-  // };
+  };
+
+  const fetchChatServer = () => {
+    console.log("fetch " + serverId);
+  };
+
+  useEffect(() => {
+    if (userFriends === undefined) return;
+    const interval = setInterval(() => {
+      fetchPrivateChat();
+    }
+    , 100);
+
+    return () => clearInterval(interval);
+  }, [userFriends]);
+
+  useEffect(() => {
+    if (serverId === undefined) return;
+    const interval = setInterval(() => {
+      fetchChatServer();
+    }
+    , 100);
+
+    return () => clearInterval(interval);
+  }, [serverId]);
+
   if (userFriends !== undefined) {
-    // fetchPrivateChat();
     return (
       <>
         <div className="chat">

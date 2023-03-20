@@ -31,11 +31,24 @@ export const UtilsBar = ({ infos }: any) => {
         } else {
           setCurrentPrivateChat(data);
         }
+      })
+      .catch((err) => {
+
       });
   };
 
+  useEffect(() => {
+    if (infos === "friends") {
+      const interval = setInterval(() => {
+        fetchCurrentPrivateChat();
+      }
+      , 100);
+
+      return () => clearInterval(interval);
+    }
+  }, [infos]);
+
   if (infos === "friends") {
-    fetchCurrentPrivateChat();
     return (
       <div className="utilsbar">
         <div className="utilsbar-header">

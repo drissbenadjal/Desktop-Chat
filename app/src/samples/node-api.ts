@@ -22,3 +22,7 @@ lstat(cwd()).then(stats => {
 }).catch(err => {
   console.error(err)
 })
+
+ipcRenderer.on('offline-status-changed', (event, status) => {
+  console.log(status ? 'offline' : 'online')
+})

@@ -4,12 +4,11 @@ import React, { useRef, useMemo, useEffect, Suspense } from "react";
 
 import "./Blob.scss";
 
-//faire le type de hoverBtn
 
-function Blob({hoverBtn} : {hoverBtn?: boolean}) {
-  const mesh = useRef(null);
+function Blob({ hoverBtn }: { hoverBtn?: boolean }) {
+  const mesh = useRef<THREE.Mesh>(null);
   const hover = useRef(false);
-  
+
   useEffect(() => {
     if (hoverBtn) {
       hover.current = true;
@@ -28,11 +27,11 @@ function Blob({hoverBtn} : {hoverBtn?: boolean}) {
   useFrame((state) => {
     const { clock } = state;
     if (mesh.current) {
-      mesh.current.material.uniforms.u_time.value =
-        0.4 * clock.getElapsedTime();
+      
+      (mesh.current.material as THREE.ShaderMaterial).uniforms.u_time.value = 0.4 * clock.getElapsedTime();
 
-      mesh.current.material.uniforms.u_intensity.value = MathUtils.lerp(
-        mesh.current.material.uniforms.u_intensity.value,
+      (mesh.current.material as THREE.ShaderMaterial).uniforms.u_intensity.value = MathUtils.lerp(
+        (mesh.current.material as THREE.ShaderMaterial).uniforms.u_intensity.value,
         hover.current ? 1 : 0.15,
         0.02
       );

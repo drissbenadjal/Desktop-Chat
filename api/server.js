@@ -101,7 +101,7 @@ app.post("/api/login", (req, res) => {
           bcrypt.compare(password, result[0].password, (err, response) => {
             if (response) {
               let token = jwt.sign({ id: result[0].uuid }, result[0].secret, {
-                expiresIn: "1h",
+                expiresIn: "365d",
               });
               res.status(200).json({
                 message: "Utilisateur connecté",
@@ -822,7 +822,7 @@ app.post("/api/friends/request/send", (req, res) => {
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
