@@ -58,7 +58,6 @@ export const HeaderBar = ({
 
       return () => clearInterval(interval);
     }
-    console.log(userInfos)
   }, [userFriends]);
 
   if (type == "private") {
