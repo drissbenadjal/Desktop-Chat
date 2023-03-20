@@ -14,7 +14,7 @@ export const Private = () => {
     }
     return (
         <div className="private">
-            <HeaderBar type="private" />
+            <HeaderBar type="private" userFriends={id} />
             <Chat userFriends={id} />
         </div>
     );

@@ -62,6 +62,28 @@ export const Chat = ({ userFriends, serverId }: any) => {
     return () => clearInterval(interval);
   }, [serverId]);
 
+  const sendMessage = (message: string) => {
+    fetch(`http://localhost:3001/api/private/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+        uuid2: userFriends as string,
+        message: message,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.message === "Message envoyé") {
+          fetchPrivateChat();
+        }
+      });
+  };
+
   if (userFriends !== undefined) {
     return (
       <>
@@ -122,7 +144,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
             <div className="message-end" ref={messagesEndRef}></div>
           </div>
         </div>
-        <ChatBar />
+        <ChatBar sendMessage={(message: string) => sendMessage(message)} />
       </>
     );
   } else {

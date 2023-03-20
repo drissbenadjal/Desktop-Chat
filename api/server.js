@@ -159,124 +159,182 @@ app.post("/api/validtoken", (req, res) => {
   }
 });
 
+app.post("/api/user/infos", (req, res) => {
+  let token = req.body.token;
+  let uuid2 = req.body.uuid2;
+  if (token && uuid2) {
+    let id = jwt.decode(token).id;
+    if (id !== uuid2) {
+      db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        if (result.length > 0) {
+          let secret = result[0].secret;
+          jwt.verify(token, secret, (err, decoded) => {
+            if (err) {
+              res.status(300).json({ message: "Token invalide" });
+            } else {
+              req.user = decoded;
+              db.query(
+                "SELECT * FROM users WHERE uuid = ?",
+                [uuid2],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  }
+                  if (result.length > 0) {
+                    res.status(200).json({
+                      message: "Utilisateur trouvé",
+                      pseudo: result[0].pseudo,
+                      tag: result[0].tag,
+                      uuid: result[0].uuid,
+                      pictureprofile: result[0].pictureprofile,
+                      status: result[0].status,
+                    });
+                  } else {
+                    res.status(300).json({ message: "Utilisateur introuvable" });
+                  }
+                }
+              );
+            }
+          });
+        } else {
+          res.status(300).json({ message: "Token invalide" });
+        }
+      });
+    } else {
+      res.status(300).json({ message: "Token invalide" });
+    }
+  } else {
+    res.status(300).json({ message: "Token invalide" });
+  }
+});
+
 app.post("/api/private", (req, res) => {
   let token = req.body.token;
   let uuid2 = req.body.uuid2;
   if (token && uuid2) {
     let id = jwt.decode(token).id;
-    db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
-      if (err) {
-        console.log(err);
-      }
-      if (result.length > 0) {
-        let secret = result[0].secret;
-        jwt.verify(token, secret, (err, decoded) => {
-          if (err) {
-            res.status(300).json({ message: "Token invalide" });
-          } else {
-            req.user = decoded;
-            db.query(
-              "SELECT * FROM current_private WHERE uuid_first = ? AND uuid_second = ?",
-              [id, uuid2],
-              (err, result) => {
-                if (err) {
-                  console.log(err);
-                } else {
-                  if (result.length > 0) {
-                    db.query(
-                      "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?)",
-                      [id + " " + uuid2, uuid2 + " " + id],
-                      (err, result) => {
-                        if (err) {
-                          console.log(err);
-                        } else {
-                          if (result.length > 0) {
-                            for (let i = 0; i < result.length; i++) {
-                              let uuid = result[i].sender;
-                              db.query(
-                                "SELECT * FROM users WHERE uuid = ?",
-                                [uuid],
-                                (err, result2) => {
-                                  if (err) {
-                                    console.log(err);
-                                  }
-                                  if (result2.length > 0) {
-                                    result[i].pictureprofile =
-                                      result2[0].pictureprofile;
-                                    result[i].pseudo = result2[0].pseudo;
-                                    result[i].tag = result2[0].tag;
-                                    if (i === result.length - 1) {
-                                      res.status(200).json(result);
+    if (id !== uuid2) {
+      db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        if (result.length > 0) {
+          let secret = result[0].secret;
+          jwt.verify(token, secret, (err, decoded) => {
+            if (err) {
+              res.status(300).json({ message: "Token invalide" });
+            } else {
+              req.user = decoded;
+              db.query(
+                "SELECT * FROM current_private WHERE uuid_first = ? AND uuid_second = ?",
+                [id, uuid2],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    if (result.length > 0) {
+                      db.query(
+                        "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?)",
+                        [id + " " + uuid2, uuid2 + " " + id],
+                        (err, result) => {
+                          if (err) {
+                            console.log(err);
+                          } else {
+                            if (result.length > 0) {
+                              for (let i = 0; i < result.length; i++) {
+                                let uuid = result[i].sender;
+                                db.query(
+                                  "SELECT * FROM users WHERE uuid = ?",
+                                  [uuid],
+                                  (err, result2) => {
+                                    if (err) {
+                                      console.log(err);
+                                    }
+                                    if (result2.length > 0) {
+                                      result[i].pictureprofile =
+                                        result2[0].pictureprofile;
+                                      result[i].pseudo = result2[0].pseudo;
+                                      result[i].tag = result2[0].tag;
+                                      if (i === result.length - 1) {
+                                        res.status(200).json(result);
+                                      }
                                     }
                                   }
-                                }
-                              );
+                                );
+                              }
+                            } else {
+                              res
+                                .status(300)
+                                .json({ message: "Aucun message" });
                             }
-                          } else {
-                            res.status(300).json({ message: "Aucun message" });
                           }
                         }
-                      }
-                    );
-                  } else {
-                    db.query(
-                      "INSERT INTO current_private (uuid_first, uuid_second) VALUES (?, ?)",
-                      [id, uuid2],
-                      (err, result) => {
-                        if (err) {
-                          console.log(err);
-                        } else {
-                          db.query(
-                            "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?)",
-                            [id + " " + uuid2, uuid2 + " " + id],
-                            (err, result) => {
-                              if (err) {
-                                console.log(err);
-                              } else {
-                                console.log(result);
-                                if (result.length > 0) {
-                                  for (let i = 0; i < result.length; i++) {
-                                    let uuid = result[i].sender;
-                                    db.query(
-                                      "SELECT * FROM users WHERE uuid = ?",
-                                      [uuid],
-                                      (err, result2) => {
-                                        if (err) {
-                                          console.log(err);
-                                        }
-                                        if (result2.length > 0) {
-                                          result[i].pictureprofile =
-                                            result2[0].pictureprofile;
-                                          result[i].pseudo = result2[0].pseudo;
-                                          result[i].tag = result2[0].tag;
-                                          if (i === result.length - 1) {
-                                            res.status(200).json(result);
+                      );
+                    } else {
+                      db.query(
+                        "INSERT INTO current_private (uuid_first, uuid_second) VALUES (?, ?)",
+                        [id, uuid2],
+                        (err, result) => {
+                          if (err) {
+                            console.log(err);
+                          } else {
+                            db.query(
+                              "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?)",
+                              [id + " " + uuid2, uuid2 + " " + id],
+                              (err, result) => {
+                                if (err) {
+                                  console.log(err);
+                                } else {
+                                  if (result.length > 0) {
+                                    for (let i = 0; i < result.length; i++) {
+                                      let uuid = result[i].sender;
+                                      db.query(
+                                        "SELECT * FROM users WHERE uuid = ?",
+                                        [uuid],
+                                        (err, result2) => {
+                                          if (err) {
+                                            console.log(err);
+                                          }
+                                          if (result2.length > 0) {
+                                            result[i].pictureprofile =
+                                              result2[0].pictureprofile;
+                                            result[i].pseudo =
+                                              result2[0].pseudo;
+                                            result[i].tag = result2[0].tag;
+                                            if (i === result.length - 1) {
+                                              res.status(200).json(result);
+                                            }
                                           }
                                         }
-                                      }
-                                    );
+                                      );
+                                    }
+                                  } else {
+                                    res
+                                      .status(300)
+                                      .json({ message: "Aucun message" });
                                   }
-                                } else {
-                                  res
-                                    .status(300)
-                                    .json({ message: "Aucun message" });
                                 }
                               }
-                            }
-                          );
+                            );
+                          }
                         }
-                      }
-                    );
+                      );
+                    }
                   }
                 }
-              }
-            );
-          }
-        });
-      } else {
-        res.status(300).json({ message: "Token invalide" });
-      }
-    });
+              );
+            }
+          });
+        } else {
+          res.status(300).json({ message: "Token invalide" });
+        }
+      });
+    } else {
+      res.status(300).json({ message: "Une erreur est survenue" });
+    }
   } else {
     res.status(300).json({ message: "Une erreur est survenue" });
   }
@@ -284,7 +342,7 @@ app.post("/api/private", (req, res) => {
 
 app.post("/api/private/current", (req, res) => {
   let token = req.body.token;
-  if (token) {
+  if (token.length > 0) {
     let id = jwt.decode(token).id;
     db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
       if (err) {
@@ -345,14 +403,51 @@ app.post("/api/private/current", (req, res) => {
   }
 });
 
+app.delete("/api/private/current/delete", (req, res) => {
+  let token = req.body.token;
+  if (token.length > 0) {
+    let id = jwt.decode(token).id;
+    let uuid = req.body.uuid;
+    db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (result.length > 0) {
+        let secret = result[0].secret;
+        jwt.verify(token, secret, (err, decoded) => {
+          if (err) {
+            res.status(300).json({ message: "Token invalide" });
+          } else {
+            req.user = decoded;
+            db.query(
+              "DELETE FROM current_private WHERE (uuid_first = ?) AND (uuid_second = ?)",
+              [id, uuid],
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.status(200).json({ message: "Chat supprimé" });
+                }
+              }
+            );
+          }
+        });
+      } else {
+        res.status(300).json({ message: "Token invalide" });
+      }
+    });
+  } else {
+    res.status(300).json({ message: "Token invalide" });
+  }
+});
+
 app.post("/api/private/send", (req, res) => {
   let token = req.body.token;
   if (token) {
     let id = jwt.decode(token).id;
-    let uuid = req.body.uuid;
     let uuid2 = req.body.uuid2;
     let message = req.body.message;
-    if (id === uuid || id === uuid2) {
+    if (id || uuid2 || message) {
       db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
         if (err) {
           console.log(err);
@@ -365,8 +460,8 @@ app.post("/api/private/send", (req, res) => {
             } else {
               req.user = decoded;
               db.query(
-                "INSERT INTO private (uuid, uuid2, message) VALUES (?, ?, ?)",
-                [uuid + " " + uuid2, message],
+                "INSERT INTO private (uuid, sender, message) VALUES (?, ?, ?)",
+                [id + " " + uuid2, id, message],
                 (err, result) => {
                   if (err) {
                     console.log(err);

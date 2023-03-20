@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { getCookie } from "@/Utils/utilsCookies";
 
@@ -10,8 +10,9 @@ import CloseIcon from "../../assets/icons/close-svg.svg";
 import ArrowDownSquare from "../../assets/icons/arrow-down-square.svg";
 
 export const UtilsBar = ({ infos }: any) => {
-  const { logout } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  const { logout } = useContext(AuthContext);
   const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
 
   const fetchCurrentPrivateChat = () => {
@@ -28,26 +29,55 @@ export const UtilsBar = ({ infos }: any) => {
       .then((data) => {
         if (data.message === "Token invalide") {
           logout();
-        } else if (data.message === "Aucun chat") {
+        } else if (
+          data.message === "Aucun chat" ||
+          data.message === "Une erreur est survenue" ||
+          data === undefined
+        ) {
+          setCurrentPrivateChat([]);
         } else {
           setCurrentPrivateChat(data);
         }
       })
-      .catch((err) => {
-
-      });
+      .catch((err) => {});
   };
 
   useEffect(() => {
     if (infos === "friends") {
       const interval = setInterval(() => {
         fetchCurrentPrivateChat();
-      }
-      , 100);
+      }, 100);
 
       return () => clearInterval(interval);
     }
   }, [infos]);
+
+  const handleClosePrivateChat = (uuid: string) => {
+    navigate("/");
+    setTimeout(() => {
+    fetch(`http://localhost:3001/api/private/current/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+        uuid: uuid,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.message === "Chat supprimé") {
+          fetchCurrentPrivateChat();
+        } else {
+          fetchCurrentPrivateChat();
+        }
+      })
+      .catch((err) => {});
+    }, 100);
+  };
 
   if (infos === "friends") {
     return (
@@ -108,7 +138,13 @@ export const UtilsBar = ({ infos }: any) => {
                           </div>
                           <p>{chat.pseudo}</p>
                         </Link>
-                        <button className="close-pm">
+                        <button
+                          className="close-pm"
+                          value={chat.uuid}
+                          onClick={(e) => {
+                            handleClosePrivateChat(e.currentTarget.value);
+                          }}
+                        >
                           <img src={CloseIcon} alt="" />
                         </button>
                       </li>
