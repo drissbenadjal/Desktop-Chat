@@ -28,6 +28,7 @@ export const UtilsBar = ({ infos }: any) => {
       .then((data) => {
         if (data.message === "Token invalide") {
           logout();
+        } else if (data.message === "Aucun chat") {
         } else {
           setCurrentPrivateChat(data);
         }
