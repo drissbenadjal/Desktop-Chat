@@ -18,7 +18,7 @@ export const HeaderBar = ({
   type: string;
   onClick?: any;
   LinkPage?: string;
-  userFriends: string;
+  userFriends?: string;
 }) => {
   const { logout } = useContext(AuthContext);
   const [userInfos, setUserInfos] = useState<any>([]);
@@ -31,7 +31,7 @@ export const HeaderBar = ({
       },
       body: new URLSearchParams({
         token: getCookie("token") as string,
-        uuid2: userFriends,
+        uuid2: userFriends as string,
       }),
     })
       .then((res) => res.json())

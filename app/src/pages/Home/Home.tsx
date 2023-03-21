@@ -112,7 +112,7 @@ export const Home = () => {
         if (data.message === "Token invalide") {
           logout();
         } else if (data.number === 0) {
-          console.log("error");
+          
         } else {
           setData(data);
           setCount(data.length);

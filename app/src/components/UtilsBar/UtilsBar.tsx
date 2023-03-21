@@ -133,7 +133,7 @@ export const UtilsBar = ({ infos }: any) => {
                       >
                         <Link to={`/private/${chat.uuid}`}>
                           <div className="status-container">
-                            <img src={chat.pictureprofile} alt="logo" />
+                            <img src={chat.pictureprofile} draggable="false" alt="logo" />
                             <div className={`status ${chat.status}`}></div>
                           </div>
                           <p>{chat.pseudo}</p>

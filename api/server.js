@@ -193,7 +193,9 @@ app.post("/api/user/infos", (req, res) => {
                       status: result[0].status,
                     });
                   } else {
-                    res.status(300).json({ message: "Utilisateur introuvable" });
+                    res
+                      .status(300)
+                      .json({ message: "Utilisateur introuvable" });
                   }
                 }
               );
@@ -322,6 +324,86 @@ app.post("/api/private", (req, res) => {
                           }
                         }
                       );
+                    }
+                  }
+                }
+              );
+            }
+          });
+        } else {
+          res.status(300).json({ message: "Token invalide" });
+        }
+      });
+    } else {
+      res.status(300).json({ message: "Une erreur est survenue" });
+    }
+  } else {
+    res.status(300).json({ message: "Une erreur est survenue" });
+  }
+});
+
+app.put("/api/private/update", (req, res) => {
+  let token = req.body.token;
+  let uuid2 = req.body.uuid2;
+  let idMessage = req.body.idMessage;
+  let message = req.body.message;
+  if (token && uuid2 && message && idMessage) {
+    let id = jwt.decode(token).id;
+    if (id !== uuid2) {
+      db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        if (result.length > 0) {
+          let secret = result[0].secret;
+          jwt.verify(token, secret, (err, decoded) => {
+            if (err) {
+              res.status(300).json({ message: "Token invalide" });
+            } else {
+              req.user = decoded;
+              //verfier si le message est pareil
+              db.query(
+                "SELECT * FROM private WHERE id = ? AND sender = ? AND (uuid = ? OR uuid = ?)",
+                [idMessage, id, id + " " + uuid2, uuid2 + " " + id],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    if (result.length > 0) {
+                      if (result[0].message === message) {
+                        res
+                          .status(300)
+                          .json({ message: "Aucune modification" });
+                      } else {
+                        db.query(
+                          "UPDATE private SET message = ?, edited = ? WHERE id = ? AND sender = ? AND (uuid = ? OR uuid = ?)",
+                          [
+                            message,
+                            1,
+                            idMessage,
+                            id,
+                            id + " " + uuid2,
+                            uuid2 + " " + id,
+                          ],
+                          (err, result) => {
+                            if (err) {
+                              console.log(err);
+                            } else {
+                              if (result.affectedRows > 0) {
+                                res
+                                  .status(200)
+                                  .json({ message: "Message modifié" });
+                              } else {
+                                res
+                                  .status(300)
+                                  .json({ message: "Aucune modification" });
+                              }
+                            }
+                          }
+                        );
+                      }
+                    } else {
+                      res.status(300).json({ message: "Aucune modification" });
                     }
                   }
                 }
