@@ -415,7 +415,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
             <div className="message-end" ref={messagesEndRef}></div>
           </div>
         </div>
-        <ChatBar sendMessage={(message: string) => sendMessage(message)} />
+        <ChatBar sendMessage={(message: string) => sendMessage(message)} userPseudo={userInfos.pseudo}/>
       </>
     );
   } else {

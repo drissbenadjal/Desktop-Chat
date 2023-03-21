@@ -2,7 +2,7 @@ import "./ChatBar.scss";
 
 import BtnPlusLogo from "../../assets/icons/plus.svg";
 
-export const ChatBar = ({ sendMessage }: any) => {
+export const ChatBar = ({ sendMessage, userPseudo }: any) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export const ChatBar = ({ sendMessage }: any) => {
           </li>
         </ul>
         <form action="" onSubmit={handleSubmit}>
-          <input type="text" placeholder="Envoyer un message à Username" />
+          <input type="text" placeholder={`Envoyer un message à @${userPseudo}`} />
         </form>
         <ul className="chatbar__right">
           <li>
