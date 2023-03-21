@@ -340,6 +340,50 @@ app.post("/api/private", (req, res) => {
   }
 });
 
+app.delete("/api/private/delete", (req, res) => {
+  let token = req.body.token;
+  let uuid2 = req.body.uuid2;
+  let idMessage = req.body.idMessage;
+  let message = req.body.message;
+  if (token && uuid2 && message && idMessage) {
+    let id = jwt.decode(token).id;
+    if (id !== uuid2) {
+      db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+        if (result.length > 0) {
+          let secret = result[0].secret;
+          jwt.verify(token, secret, (err, decoded) => {
+            if (err) {
+              res.status(300).json({ message: "Token invalide" });
+            } else {
+              req.user = decoded;
+              db.query(
+                "DELETE FROM private WHERE (id = ?) AND (uuid = ? or uuid = ?) AND (sender = ?) AND (message = ?)",
+                [idMessage, id + " " + uuid2, uuid2 + " " + id, id, message],
+                (err, result) => {
+                  if (err) {
+                    console.log(err);
+                  } else {
+                    res.status(200).json({ message: "Message supprimé" });
+                  }
+                }
+              );
+            }
+          });
+        } else {
+          res.status(300).json({ message: "Token invalide" });
+        }
+      });
+    } else {
+      res.status(300).json({ message: "Une erreur est survenue" });
+    }
+  } else {
+    res.status(300).json({ message: "Une erreur est survenue" });
+  }
+});
+
 app.post("/api/private/current", (req, res) => {
   let token = req.body.token;
   if (token.length > 0) {

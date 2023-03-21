@@ -59,6 +59,7 @@ async function createWindow() {
     },
   })
   win.setMenuBarVisibility(false);
+  // win.setWindowButtonVisibility(true); // pour les boutons de fermeture, minimisation, agrandissement sur mac
 
   if (process.env.VITE_DEV_SERVER_URL) { // electron-vite-vue#298
     win.loadURL(url)

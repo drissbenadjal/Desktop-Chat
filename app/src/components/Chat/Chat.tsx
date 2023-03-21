@@ -1,41 +1,44 @@
-import React, { useEffect, useRef, useState, useContext } from "react";
+import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
 import "./Chat.scss";
 import { ChatBar } from "../ChatBar/ChatBar";
 import { AuthContext } from "@/Context/AuthContext";
 import { getCookie } from "@/Utils/utilsCookies";
 
+import beanLogo from "@/assets/icons/delete.svg";
+import editLogo from "@/assets/icons/edit.svg";
+
 export const Chat = ({ userFriends, serverId }: any) => {
   const { logout, user } = useContext(AuthContext);
 
-  const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
+  const [currentPrivateChat, setCurrentPrivateChat] = useState([]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView();
   };
 
   const fetchPrivateChat = () => {
-  fetch(`http://localhost:3001/api/private`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: new URLSearchParams({
-      token: getCookie("token") as string,
-      uuid2: userFriends as string,
-    }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.message === "Token invalide") {
-        logout();
-      } else if (data.message === "Aucun message") {
-        setCurrentPrivateChat([]);
-      } else {
-        setCurrentPrivateChat(data);
-      }
-    });
+    fetch(`http://localhost:3001/api/private`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+        uuid2: userFriends as string,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.message === "Aucun message") {
+          setCurrentPrivateChat([]);
+        } else {
+          setCurrentPrivateChat(data);
+        }
+      });
   };
 
   const fetchChatServer = () => {
@@ -45,9 +48,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
   useEffect(() => {
     if (userFriends === undefined) return;
     const interval = setInterval(() => {
-      fetchPrivateChat();
+      fetchPrivateChat()
     }
-    , 100);
+      , 100);
 
     return () => clearInterval(interval);
   }, [userFriends]);
@@ -57,7 +60,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
     const interval = setInterval(() => {
       fetchChatServer();
     }
-    , 100);
+      , 100);
 
     return () => clearInterval(interval);
   }, [serverId]);
@@ -84,15 +87,35 @@ export const Chat = ({ userFriends, serverId }: any) => {
       });
   };
 
+  const handleDeleteMessage = (message: string, id: any) => {
+    fetch(`http://localhost:3001/api/private/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: getCookie("token") as string,
+        uuid2: userFriends as string,
+        idMessage: id,
+        message: message,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+      });
+  }
+
   if (userFriends !== undefined) {
     return (
       <>
         <div className="chat">
           <div className="message-container">
+            <div className="start__conv">
+              <p>Start a conversation with {userFriends}</p>
+            </div>
             {currentPrivateChat &&
               currentPrivateChat.map((message: any, index: number) => {
-                //mettre la date en / / /
-                let date = new Date(message.date).toLocaleDateString( "fr-FR", {
+                let date = new Date(message.date).toLocaleDateString("fr-FR", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
@@ -115,18 +138,18 @@ export const Chat = ({ userFriends, serverId }: any) => {
                             {
                               // si la date est aujourd'hui, afficher l'heure
                               // sinon afficher la date
-                              date === new Date().toLocaleDateString( "fr-FR", {
+                              date === new Date().toLocaleDateString("fr-FR", {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
                               })
                                 ? new Date(message.date).toLocaleTimeString(
-                                    "fr-FR",
-                                    {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    }
-                                  )
+                                  "fr-FR",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )
                                 : date
                             }
                           </p>
@@ -137,6 +160,25 @@ export const Chat = ({ userFriends, serverId }: any) => {
                           </p>
                         </div>
                       </div>
+                    </div>
+                    <div className="chat__action">
+                      <ul>
+                        <li>
+                          <button>
+                            e
+                          </button>
+                        </li>
+                        <li>
+                          <button>
+                            <img src={editLogo} alt="edit" />
+                          </button>
+                        </li>
+                        <li>
+                          <button onClick={() => handleDeleteMessage(message.message, message.id)}>
+                            <img src={beanLogo} alt="bean" />
+                          </button>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 );
