@@ -8,6 +8,8 @@ import "./UtilsBar.scss";
 import { ChatStatus } from "../ChatStatus/ChatStatus";
 import CloseIcon from "../../assets/icons/close-svg.svg";
 import ArrowDownSquare from "../../assets/icons/arrow-down-square.svg";
+import UsersIcon from "../../assets/icons/users.svg";
+import WalletIcon from "../../assets/icons/wallet.svg";
 
 export const UtilsBar = ({ infos }: any) => {
   const navigate = useNavigate();
@@ -39,7 +41,7 @@ export const UtilsBar = ({ infos }: any) => {
           setCurrentPrivateChat(data);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   useEffect(() => {
@@ -55,27 +57,27 @@ export const UtilsBar = ({ infos }: any) => {
   const handleClosePrivateChat = (uuid: string) => {
     navigate("/");
     setTimeout(() => {
-    fetch(`http://localhost:3001/api/private/current/delete`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        token: getCookie("token") as string,
-        uuid: uuid,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.message === "Token invalide") {
-          logout();
-        } else if (data.message === "Chat supprimé") {
-          fetchCurrentPrivateChat();
-        } else {
-          fetchCurrentPrivateChat();
-        }
+      fetch(`http://localhost:3001/api/private/current/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          token: getCookie("token") as string,
+          uuid: uuid,
+        }),
       })
-      .catch((err) => {});
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.message === "Token invalide") {
+            logout();
+          } else if (data.message === "Chat supprimé") {
+            fetchCurrentPrivateChat();
+          } else {
+            fetchCurrentPrivateChat();
+          }
+        })
+        .catch((err) => { });
     }, 100);
   };
 
@@ -93,17 +95,19 @@ export const UtilsBar = ({ infos }: any) => {
               to="/home"
               className={
                 useLocation().pathname === "/home" ||
-                useLocation().pathname === "/"
+                  useLocation().pathname === "/"
                   ? "active"
                   : ""
               }
             >
+              <img src={UsersIcon} alt="" />
               <p>Friends</p>
             </Link>
             <Link
               to="/premium"
               className={useLocation().pathname === "/premium" ? "active" : ""}
             >
+              <img src={WalletIcon} alt="" />
               <p>Premium</p>
             </Link>
           </div>

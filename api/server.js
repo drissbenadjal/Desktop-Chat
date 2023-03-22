@@ -239,7 +239,7 @@ app.post("/api/private", (req, res) => {
                   } else {
                     if (result.length > 0) {
                       db.query(
-                        "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?)",
+                        "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?) ORDER BY date ASC",
                         [id + " " + uuid2, uuid2 + " " + id],
                         (err, result) => {
                           if (err) {

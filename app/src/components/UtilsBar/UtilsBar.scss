@@ -1,4 +1,4 @@
-.utilsbar{
+.utilsbar {
     max-width: 240px;
     min-width: 240px;
     width: 100%;
@@ -11,7 +11,7 @@
     border-top-left-radius: 10px;
 }
 
-.utilsbar-header__server{
+.utilsbar-header__server {
     width: 100%;
     max-height: 50px;
     min-height: 50px;
@@ -22,7 +22,7 @@
     gap: 10px;
     border-bottom: 1px solid #333;
 
-    button{
+    button {
         width: 100%;
         height: 100%;
         display: flex;
@@ -38,7 +38,7 @@
         cursor: pointer;
         transition: background-color 0.2s ease-in-out;
 
-        &:hover{
+        &:hover {
             background-color: #333;
         }
 
@@ -52,6 +52,7 @@
         img {
             width: 20px;
             height: 20px;
+            -o-object-fit: contain;
             object-fit: contain;
             border-radius: 50%;
             opacity: 0.8;
@@ -68,6 +69,8 @@
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     -webkit-user-select: none;
     padding-top: 15px;
@@ -116,13 +119,14 @@
             transition: opacity 0.2s ease-in-out;
             opacity: 0.8;
 
-            &:hover{
+            &:hover {
                 opacity: 1;
             }
 
             img {
                 width: 15px;
                 height: 15px;
+                -o-object-fit: contain;
                 object-fit: contain;
                 opacity: 0.8;
             }
@@ -164,7 +168,7 @@
                 cursor: pointer;
                 transition: background-color 0.2s ease-in-out;
 
-                &:hover{
+                &:hover {
                     background-color: #333;
                 }
 
@@ -184,13 +188,14 @@
                     cursor: pointer;
                     transition: background-color 0.2s ease-in-out;
 
-                    &:hover{
+                    &:hover {
                         background-color: #333;
                     }
 
                     img {
                         width: 20px;
                         height: 20px;
+                        -o-object-fit: contain;
                         object-fit: contain;
                         border-radius: 50%;
                         opacity: 0.8;
@@ -210,7 +215,7 @@
 
 }
 
-.utilsbar-container{
+.utilsbar-container {
     width: 100%;
     height: 100%;
     display: flex;
@@ -220,30 +225,30 @@
     gap: 20px;
     padding-top: 20px;
     overflow-y: auto;
-    
+
     &::-webkit-scrollbar {
         width: 3px;
     }
-    
+
     &::-webkit-scrollbar-track {
         background: #212121;
     }
-    
+
     &::-webkit-scrollbar-thumb {
         background: #555;
         border-radius: 5px;
     }
-    
+
     &::-webkit-scrollbar-thumb:hover {
         background: #333;
     }
-    
+
     &::-webkit-scrollbar-thumb:active {
         background: #333;
     }
 }
 
-.utilsbar .utilsbar-header{
+.utilsbar .utilsbar-header {
     width: 100%;
     min-height: 50px;
     display: flex;
@@ -253,7 +258,7 @@
     padding: 0 10px;
     border-bottom: 1px solid #333;
 
-    form{
+    form {
         width: 100%;
         display: flex;
         justify-content: flex-start;
@@ -265,7 +270,7 @@
         border-radius: 5px;
         background-color: #333;
 
-        input{
+        input {
             width: 100%;
             height: 25px;
             border: none;
@@ -276,7 +281,7 @@
     }
 }
 
-.utilsbar .utilsbar-action{
+.utilsbar .utilsbar-action {
     width: 100%;
     height: auto;
     display: flex;
@@ -299,12 +304,20 @@
         text-decoration: none;
         transition: all 0.10s ease-in-out;
 
-        &:hover{
+        img {
+            width: 20px;
+            height: 20px;
+            -o-object-fit: contain;
+            object-fit: contain;
+            opacity: 0.8;
+        }
+
+        &:hover {
             background-color: #333;
         }
     }
 
-    a.active{
+    a.active {
         background-color: #333;
     }
 }
@@ -316,6 +329,8 @@
     justify-content: flex-start;
     align-items: center;
     gap: 10px;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
     -webkit-user-select: none;
 
@@ -353,12 +368,12 @@
             transition: all 0.10s ease-in-out;
             margin: 0;
 
-            p{
+            p {
                 font-size: 0.75rem;
                 margin: 0;
             }
 
-            button{
+            button {
                 border: none;
                 border-radius: 5px;
                 color: #fff;
@@ -368,7 +383,7 @@
                 transition: all 0.10s ease-in-out;
                 margin: 0;
 
-                &:hover{
+                &:hover {
                     background-color: #555;
                 }
             }
@@ -397,7 +412,7 @@
             padding: 10px 0px;
             margin: 0;
 
-            li.active-pm{
+            li.active-pm {
                 background-color: #333;
             }
 
@@ -408,7 +423,8 @@
                 display: flex;
                 border-radius: 5px;
                 padding: 0 10px;
-                a{
+
+                a {
                     width: 100%;
                     height: 43px;
                     display: flex;
@@ -424,6 +440,7 @@
                         width: 33px;
                         height: 33px;
                         border-radius: 50%;
+                        -o-object-fit: cover;
                         object-fit: cover;
                     }
 
@@ -461,11 +478,11 @@
                     }
                 }
 
-                &:hover{
+                &:hover {
                     background-color: #333;
                 }
 
-                .close-pm{
+                .close-pm {
                     opacity: 0;
                     position: absolute;
                     top: 50%;
@@ -486,16 +503,17 @@
                         opacity: 0.7;
                         width: 17px;
                         height: 17px;
+                        -o-object-fit: cover;
                         object-fit: cover;
 
-                        &:hover{
+                        &:hover {
                             opacity: 1;
                         }
                     }
                 }
 
-                &:hover{
-                    .close-pm{
+                &:hover {
+                    .close-pm {
                         opacity: 1;
                     }
                 }

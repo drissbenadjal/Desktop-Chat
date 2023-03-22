@@ -311,7 +311,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
               </div>
             )}
             {currentPrivateChat &&
+              //afficher les messages par rapport à l'ordre de la date
               currentPrivateChat.map((message: any, index: number) => {
+                //afficher les messages par rapport à l'ordre de la date
                 let date = new Date(message.date).toLocaleDateString("fr-FR", {
                   year: "numeric",
                   month: "long",

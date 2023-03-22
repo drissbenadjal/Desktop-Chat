@@ -285,11 +285,14 @@
                         }
 
                         .message__left__content__body__text {
+                            max-width: 100%;
                             font-size: 1rem;
                             font-weight: 400;
                             color: #fff;
                             margin: 0;
                             line-height: 1;
+                            word-wrap: break-word;
+                            word-break: break-word;
 
                             span {
                                 font-size: 0.75rem;
@@ -381,6 +384,7 @@
                                     width: auto;
                                     height: auto;
                                     color: #408afa;
+                                    line-height: 1.5;
 
                                     &:hover {
                                         text-decoration: underline;
@@ -394,6 +398,7 @@
                                     font-weight: 400;
                                     color: #969696;
                                     margin: 0;
+                                    line-height: 1;
                                 }
 
                             }
