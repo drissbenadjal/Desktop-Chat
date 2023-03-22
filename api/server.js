@@ -284,7 +284,7 @@ app.post("/api/private", (req, res) => {
                             console.log(err);
                           } else {
                             db.query(
-                              "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?)",
+                              "SELECT * FROM private WHERE (uuid = ?) OR (uuid = ?) ORDER BY date ASC",
                               [id + " " + uuid2, uuid2 + " " + id],
                               (err, result) => {
                                 if (err) {
