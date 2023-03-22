@@ -44,7 +44,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         } else {
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   useEffect(() => {
@@ -103,6 +103,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
   }, [serverId]);
 
   const sendMessage = (message: string) => {
+    if (message.trim() === "") return;
     fetch(`http://localhost:3001/api/private/send`, {
       method: "POST",
       headers: {
@@ -140,6 +141,8 @@ export const Chat = ({ userFriends, serverId }: any) => {
     if (popupChildRef.current?.contains(event.target)) {
       if (event.target.id === "cancel-popup") {
         handleDeleteMessage(popupMessage, popupId);
+      } else if (event.target.id === "delete-popup") {
+        handleCancelPopup();
       }
     } else {
       handleCancelPopup();
@@ -278,6 +281,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
                   </li>
                   <li>
                     <button
+                      id="delete-popup"
                       className="accept"
                       onClick={() => handleDeleteMessage(popupMessage, popupId)}
                     >
@@ -333,18 +337,18 @@ export const Chat = ({ userFriends, serverId }: any) => {
                               // si la date est aujourd'hui, afficher l'heure
                               // sinon afficher la date
                               date ===
-                              new Date().toLocaleDateString("fr-FR", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
+                                new Date().toLocaleDateString("fr-FR", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
                                 ? new Date(message.date).toLocaleTimeString(
-                                    "fr-FR",
-                                    {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    }
-                                  )
+                                  "fr-FR",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )
                                 : date
                             }
                           </p>
@@ -415,7 +419,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
             <div className="message-end" ref={messagesEndRef}></div>
           </div>
         </div>
-        <ChatBar sendMessage={(message: string) => sendMessage(message)} userPseudo={userInfos.pseudo}/>
+        <ChatBar sendMessage={(message: string) => sendMessage(message)} userPseudo={userInfos.pseudo} />
       </>
     );
   } else {

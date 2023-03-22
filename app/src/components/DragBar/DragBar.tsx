@@ -7,8 +7,11 @@ import close from '../../assets/icons/close-svg.svg'
 
 
 export const DragBar = () => {
-    return (
-        <nav className="top-nav">
+  return (
+    <nav className="top-nav">
+      {
+        //si on est pas sur sur mac os on affiche les boutons
+        process.platform !== 'darwin' && (
           <ul>
             <li className="minimize-window" onClick={() => CLOSE_BTN.window.minimize()}>
               <img draggable="false" src={minimize} alt="logo" />
@@ -20,6 +23,8 @@ export const DragBar = () => {
               <img draggable="false" src={close} alt="logo" />
             </li>
           </ul>
-        </nav>
-    )
+        )
+      }
+    </nav>
+  )
 }

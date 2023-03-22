@@ -45,6 +45,8 @@
             align-items: flex-start;
             gap: 7px;
             padding: 20px 20px 0px 20px;
+            -moz-user-select: none;
+            -ms-user-select: none;
             user-select: none;
             -webkit-user-select: none;
 
@@ -281,25 +283,28 @@
                         .hidden {
                             display: none !important;
                         }
-                        
+
                         .message__left__content__body__text {
                             font-size: 1rem;
                             font-weight: 400;
                             color: #fff;
                             margin: 0;
+                            line-height: 1;
 
                             span {
                                 font-size: 0.75rem;
                                 font-weight: 400;
                                 font-style: italic;
                                 color: #868686;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
                                 user-select: none;
                                 -webkit-user-select: none;
                             }
 
                         }
 
-                        form.message__left__content__body__edite{
+                        form.message__left__content__body__edite {
                             width: 100%;
                             height: auto;
                             display: flex;
@@ -364,6 +369,8 @@
                                 justify-content: flex-start;
                                 align-items: center;
                                 gap: 5px;
+                                -moz-user-select: none;
+                                -ms-user-select: none;
                                 user-select: none;
                                 -webkit-user-select: none;
 
