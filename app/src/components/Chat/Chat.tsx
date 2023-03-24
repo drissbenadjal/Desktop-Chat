@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
+// import Peer from "simple-peer";
 import "./Chat.scss";
 import "./PopupAction.scss";
 import { AuthContext } from "@/Context/AuthContext";
 import { getCookie } from "@/Utils/utilsCookies";
 import { ChatBar } from "../ChatBar/ChatBar";
+import { PrivateVoiceChat } from "../PrivateVoiceChat/PrivateVoiceChat";
 
 import beanLogo from "@/assets/icons/delete.svg";
 import editLogo from "@/assets/icons/edit.svg";
 
 export const Chat = ({ userFriends, serverId }: any) => {
-  const { logout, user } = useContext(AuthContext);
+  const { logout, user, socket } = useContext(AuthContext);
 
   const [userInfos, setUserInfos] = useState<any>([]);
   const [currentPrivateChat, setCurrentPrivateChat] = useState([]);
@@ -44,7 +46,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         } else {
         }
       })
-      .catch((err) => { });
+      .catch((err) => {});
   };
 
   useEffect(() => {
@@ -257,10 +259,81 @@ export const Chat = ({ userFriends, serverId }: any) => {
       });
   };
 
+  // const [video, setVideo] = useState(null);
+  // const [receivingCall, setReceivingCall] = useState(false);
+  // const [callerSignal, setCallerSignal] = useState();
+  // const [callAccepted, setCallAccepted] = useState(false);
+
+  // const handleVideo = () => {
+  //   navigator.mediaDevices
+  //     .getUserMedia({ video: true, audio: true })
+  //     .then((stream) => {
+  //       setVideo(stream as any);
+  //     });
+  // };
+
+  // const handleRemoveVideo = () => {
+  //   setVideo(null);
+  // };
+
+  // const handleCall = () => {
+  //     const peer = new Peer({
+  //       initiator: true,
+  //       trickle: false,
+  //       stream: video,
+  //     });
+  //     peer.on("signal", (data : any) => {
+  //       socket.emit("calluser", {
+  //         userToCall: userFriends.uuid,
+  //         signalData: data,
+  //         from: user.uuid,
+  //       });
+  //     });
+  //     peer.on("stream", (stream : any) => {
+  //       if (userVideo.current) {
+  //         userVideo.current.srcObject = stream;
+  //       }
+  //     });
+  //     socket.on("callaccepted", (signal : any) => {
+  //       setCallAccepted(true);
+  //       peer.signal(signal);
+  //     }
+  //   );
+  // };
+
+  // const handleAnswerCall = () => {
+  //   setCallAccepted(true);
+  //   const peer = new Peer({
+  //     initiator: false,
+  //     trickle: false,
+  //     stream: video,
+  //   });
+  //   peer.on("signal", (data : any) => {
+  //     socket.emit("answercall", { signal: data, to: callerSignal.from });
+  //   });
+  //   peer.on("stream", (stream : any) => {
+  //     if (userVideo.current) {
+  //       userVideo.current.srcObject = stream;
+  //     }
+  //   });
+    
+  //   peer.signal(callerSignal);
+  // };
+
+  // useEffect(() => {
+  //   socket.on("callincoming", (data: any) => {
+  //     if (userInfos.uuid === data.from) {
+  //       setReceivingCall(true);
+  //       setCallerSignal(data.signal);
+  //     }
+  //   });
+  // }, []);
+
   if (userFriends !== undefined) {
     return (
       <>
         <div className="chat">
+          <PrivateVoiceChat />
           <div className="popup__action" ref={popupRef}>
             <div className="popup__action__container" ref={popupChildRef}>
               <div className="popup__firstpart">
@@ -296,10 +369,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
             {userInfos.length !== 0 && (
               <div className="start__conv">
                 <div className="start__conv__pictureprofile">
-                  <img
-                    src={userInfos.pictureprofile}
-                    draggable="false"
-                  />
+                  <img src={userInfos.pictureprofile} draggable="false" />
                 </div>
                 <h3>{userInfos.pseudo}</h3>
                 <p>
@@ -339,18 +409,18 @@ export const Chat = ({ userFriends, serverId }: any) => {
                               // si la date est aujourd'hui, afficher l'heure
                               // sinon afficher la date
                               date ===
-                                new Date().toLocaleDateString("fr-FR", {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                })
+                              new Date().toLocaleDateString("fr-FR", {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                              })
                                 ? new Date(message.date).toLocaleTimeString(
-                                  "fr-FR",
-                                  {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                  }
-                                )
+                                    "fr-FR",
+                                    {
+                                      hour: "2-digit",
+                                      minute: "2-digit",
+                                    }
+                                  )
                                 : date
                             }
                           </p>
@@ -368,11 +438,20 @@ export const Chat = ({ userFriends, serverId }: any) => {
                             className="message__left__content__body__edite hidden"
                             edit-id={`edit-${index}`}
                             onSubmit={(e) =>
-                              submitEditMessage((e.target as HTMLFormElement).updateMessage.value, message.id, e)
+                              submitEditMessage(
+                                (e.target as HTMLFormElement).updateMessage
+                                  .value,
+                                message.id,
+                                e
+                              )
                             }
                             onChange={(e) => handleChangeInput(e)}
                           >
-                            <input type="text" id="updateMessage" defaultValue={editMessage} />
+                            <input
+                              type="text"
+                              id="updateMessage"
+                              defaultValue={editMessage}
+                            />
                             <div className="message__left__content__body__edite__action">
                               <p>esc to cancel</p>
                               <button
@@ -398,7 +477,11 @@ export const Chat = ({ userFriends, serverId }: any) => {
                               <button>e</button>
                             </li> */}
                             <li>
-                              <button onClick={() => handleEditMessage(index, message.message)}>
+                              <button
+                                onClick={() =>
+                                  handleEditMessage(index, message.message)
+                                }
+                              >
                                 <img src={editLogo} alt="edit" />
                               </button>
                             </li>
@@ -421,7 +504,10 @@ export const Chat = ({ userFriends, serverId }: any) => {
             <div className="message-end" ref={messagesEndRef}></div>
           </div>
         </div>
-        <ChatBar sendMessage={(message: string) => sendMessage(message)} userPseudo={userInfos.pseudo} />
+        <ChatBar
+          sendMessage={(message: string) => sendMessage(message)}
+          userPseudo={userInfos.pseudo}
+        />
       </>
     );
   } else {

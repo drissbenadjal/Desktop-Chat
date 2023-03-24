@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getCookie, addCookie, removeCookie } from "../Utils/utilsCookies";
-import io from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 export interface User {
   pseudo: string;
@@ -18,6 +18,7 @@ export interface AuthContextType {
   loginError: string;
   signup: (pseudo: string, email: string, password: string) => void;
   signupError: string;
+  socket: Socket;
 }
 
 export interface Props {
@@ -32,7 +33,8 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => { },
   loginError: "",
   signup: () => { },
-  signupError: ""
+  signupError: "",
+  socket: io("http://localhost:3001"),
 });
 
 const AuthContextProvider = ({ children }: Props) => {
@@ -130,7 +132,7 @@ const AuthContextProvider = ({ children }: Props) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError, signup, signupError, loading }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, loginError, signup, signupError, loading, socket }}>
       {children}
     </AuthContext.Provider>
   );
