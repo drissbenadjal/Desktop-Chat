@@ -1108,7 +1108,6 @@ io.on("connection", (socket) => {
   
 
   socket.on("callUser", (data) => {
-    console.log("callUser", data.userToCall);
     socket.broadcast.emit("callUser", {
       signal: data.signalData,
       from: data.from,
