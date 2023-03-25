@@ -1030,7 +1030,6 @@ const io = require("socket.io")(server, {
 });
 
 io.on("connection", (socket) => {
-  // console.log("User connected");
   socket.on("token", (token) => {
     if (token) {
       let id = jwt.decode(token).id;
@@ -1053,10 +1052,11 @@ io.on("connection", (socket) => {
                   }
                 }
               );
+              socket.id = id;
             }
           });
           socket.on("disconnect", () => {
-            // console.log("User disconnected");
+            socket.broadcast.emit("callEnded");
             db.query(
               "UPDATE users SET status = ? WHERE uuid = ?",
               ["offline", id],
@@ -1103,6 +1103,22 @@ io.on("connection", (socket) => {
         }
       });
     }
+  });
+
+  
+
+  socket.on("callUser", (data) => {
+    console.log("callUser", data.userToCall);
+    socket.broadcast.emit("callUser", {
+      signal: data.signalData,
+      from: data.from,
+      name: data.name,
+      to: data.userToCall,
+    });
+  });
+
+  socket.on("answerCall", (data) => {
+    io.to(data.to).emit("callAccepted"), data.signal;
   });
 });
 

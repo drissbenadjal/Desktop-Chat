@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../Context/AuthContext";
+import { VoiceChatContext } from "@/Context/VoiceChatContext";
 import { getCookie } from "@/Utils/utilsCookies";
 import "./HeaderBar.scss";
 
@@ -22,6 +23,7 @@ export const HeaderBar = ({
 }) => {
   const { logout } = useContext(AuthContext);
   const [userInfos, setUserInfos] = useState<any>([]);
+  const { callUser } = useContext(VoiceChatContext);
 
   const fetchUserInfos = () => {
     fetch(`http://localhost:3001/api/user/infos`, {
@@ -72,7 +74,7 @@ export const HeaderBar = ({
         <div className="headerbar__right">
           <ul>
             <li>
-              <button>
+              <button onClick={() => callUser()}>
                 <img className="call-logo" src={CallLogo} alt="" />
               </button>
             </li>

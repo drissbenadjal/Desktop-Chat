@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from "react";
+import ReactDOM from "react-dom/client";
 
 import {
   createBrowserRouter,
@@ -10,13 +10,14 @@ import {
   HashRouter,
 } from "react-router-dom";
 
-import { AuthContextProvider } from './Context/AuthContext';
+import { AuthContextProvider } from "./Context/AuthContext";
+import { VoiceChatContextProvider } from "./Context/VoiceChatContext";
 
-import { View } from './pages/View/View';
-import { DragBar } from './components/DragBar/DragBar';
+import { View } from "./pages/View/View";
+import { DragBar } from "./components/DragBar/DragBar";
 
-import './samples/node-api'
-import './index.scss'
+import "./samples/node-api";
+import "./index.scss";
 
 const rooter = createHashRouter(
   createRoutesFromElements([
@@ -31,14 +32,15 @@ const rooter = createHashRouter(
   ])
 );
 
-
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
+    <DragBar />
     <AuthContextProvider>
-      <DragBar />
-      <RouterProvider router={rooter} />
+      <VoiceChatContextProvider>
+        <RouterProvider router={rooter} />
+      </VoiceChatContextProvider>
     </AuthContextProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
 
-postMessage({ payload: 'removeLoading' }, '*')
+postMessage({ payload: "removeLoading" }, "*");

@@ -1,17 +1,24 @@
 import React, { useEffect, useRef, useState, useContext, useMemo } from "react";
-// import Peer from "simple-peer";
 import "./Chat.scss";
 import "./PopupAction.scss";
+import "./PrivateVoiceChat.scss";
 import { AuthContext } from "@/Context/AuthContext";
+import { VoiceChatContext } from "@/Context/VoiceChatContext";
 import { getCookie } from "@/Utils/utilsCookies";
 import { ChatBar } from "../ChatBar/ChatBar";
-import { PrivateVoiceChat } from "../PrivateVoiceChat/PrivateVoiceChat";
 
 import beanLogo from "@/assets/icons/delete.svg";
 import editLogo from "@/assets/icons/edit.svg";
+import LogoCall from "../../assets/icons/call.svg";
+import LogoClose from "../../assets/icons/call-remove.svg";
+import LogoMic from "../../assets/icons/mic.svg";
+import LogoMicOff from "../../assets/icons/mic-slash.svg";
+import LogoVideo from "../../assets/icons/video.svg";
+import LogoVideoOff from "../../assets/icons/video-off.svg";
 
 export const Chat = ({ userFriends, serverId }: any) => {
   const { logout, user, socket } = useContext(AuthContext);
+  const { callUser, callAccepted, callEnded, answerCall, leaveCall, video, audio, otherVideo, otherAudio, handleVideo, handleRemoveVideo, handleMic, handleRemoveMic, userAudio, userVideo, myVideo, myAudio, name, setName, caller, setCaller, setCallAccepted, setCallEnded, setCallSignal, setReceivingCall, callSignal, receivingCall, connectionRef } = useContext(VoiceChatContext);
 
   const [userInfos, setUserInfos] = useState<any>([]);
   const [currentPrivateChat, setCurrentPrivateChat] = useState([]);
@@ -123,6 +130,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
           logout();
         } else if (data.message === "Message envoyé") {
           fetchPrivateChat();
+          setTimeout(() => {
+            scrollToBottom();
+          }, 100);
         }
       });
   };
@@ -259,81 +269,98 @@ export const Chat = ({ userFriends, serverId }: any) => {
       });
   };
 
-  // const [video, setVideo] = useState(null);
-  // const [receivingCall, setReceivingCall] = useState(false);
-  // const [callerSignal, setCallerSignal] = useState();
-  // const [callAccepted, setCallAccepted] = useState(false);
-
-  // const handleVideo = () => {
-  //   navigator.mediaDevices
-  //     .getUserMedia({ video: true, audio: true })
-  //     .then((stream) => {
-  //       setVideo(stream as any);
-  //     });
-  // };
-
-  // const handleRemoveVideo = () => {
-  //   setVideo(null);
-  // };
-
-  // const handleCall = () => {
-  //     const peer = new Peer({
-  //       initiator: true,
-  //       trickle: false,
-  //       stream: video,
-  //     });
-  //     peer.on("signal", (data : any) => {
-  //       socket.emit("calluser", {
-  //         userToCall: userFriends.uuid,
-  //         signalData: data,
-  //         from: user.uuid,
-  //       });
-  //     });
-  //     peer.on("stream", (stream : any) => {
-  //       if (userVideo.current) {
-  //         userVideo.current.srcObject = stream;
-  //       }
-  //     });
-  //     socket.on("callaccepted", (signal : any) => {
-  //       setCallAccepted(true);
-  //       peer.signal(signal);
-  //     }
-  //   );
-  // };
-
-  // const handleAnswerCall = () => {
-  //   setCallAccepted(true);
-  //   const peer = new Peer({
-  //     initiator: false,
-  //     trickle: false,
-  //     stream: video,
-  //   });
-  //   peer.on("signal", (data : any) => {
-  //     socket.emit("answercall", { signal: data, to: callerSignal.from });
-  //   });
-  //   peer.on("stream", (stream : any) => {
-  //     if (userVideo.current) {
-  //       userVideo.current.srcObject = stream;
-  //     }
-  //   });
-    
-  //   peer.signal(callerSignal);
-  // };
-
-  // useEffect(() => {
-  //   socket.on("callincoming", (data: any) => {
-  //     if (userInfos.uuid === data.from) {
-  //       setReceivingCall(true);
-  //       setCallerSignal(data.signal);
-  //     }
-  //   });
-  // }, []);
-
   if (userFriends !== undefined) {
     return (
       <>
         <div className="chat">
-          <PrivateVoiceChat />
+          {callAccepted || receivingCall ? (
+            <div className="private-voice-chat">
+              <ul className="private-voice-chat-users">
+                <li>
+                  <button className="private-voice-user">
+                    <img
+                      style={{ outline: "2px solid #1fe640d7" }}
+                      src="https://digitagava.com/dashboard/img/pp/default.png"
+                      alt="User"
+                      draggable="false"
+                    />
+                    <audio ref={userAudio} autoPlay />
+                  </button>
+                </li>
+                {video === null ? (
+                  <li>
+                    <button className="private-voice-user">
+                      <img
+                        src="https://digitagava.com/dashboard/img/pp/pprose2.png"
+                        alt="User"
+                        draggable="false"
+                      />
+                      {/* <audio ref={myAudio} autoPlay /> */}
+                    </button>
+                  </li>
+                ) : null}
+                <li
+                  className="private-video-user"
+                  style={
+                    video === null ? { display: "none" } : { display: "block" }
+                  }
+                >
+                  <button>
+                    <video playsInline ref={myVideo} autoPlay />
+                  </button>
+                </li>
+                <li
+                  className="private-video-user"
+                  style={
+                    otherVideo === null
+                      ? { display: "none" }
+                      : { display: "block" }
+                  }
+                >
+                  <button>
+                    <video playsInline ref={userVideo} autoPlay />
+                  </button>
+                </li>
+              </ul>
+              <ul className="private-voice-chat-actions">
+                {callAccepted && !callEnded ? (
+                  <>
+                    <li>
+                      {video === null ? (
+                        <button onClick={handleVideo}>
+                          <img src={LogoVideo} alt="Video" draggable="false" />
+                        </button>
+                      ) : (
+                        <button onClick={handleRemoveVideo}>
+                          <img
+                            src={LogoVideoOff}
+                            alt="Video"
+                            draggable="false"
+                          />
+                        </button>
+                      )}
+                    </li>
+                    <li>
+                      <button>
+                        <img src={LogoMic} alt="Mic" draggable="false" />
+                      </button>
+                    </li>
+                    <li>
+                      <button className="private-voice-chat-call-reject" onClick={leaveCall}>
+                        <img src={LogoClose} alt="Close" draggable="false" />
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <button onClick={answerCall}>
+                          <img src={LogoVideo} alt="Accept" draggable="false" />
+                    </button>
+                  </li>
+                )}
+              </ul>
+            </div>
+          ) : null}
           <div className="popup__action" ref={popupRef}>
             <div className="popup__action__container" ref={popupChildRef}>
               <div className="popup__firstpart">
