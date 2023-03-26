@@ -30,6 +30,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
   };
 
   const fetchUserInfos = () => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch(`http://localhost:3001/api/user/infos`, {
       method: "POST",
       headers: {
@@ -67,6 +70,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
   }, [userFriends]);
 
   const fetchPrivateChat = () => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch(`http://localhost:3001/api/private`, {
       method: "POST",
       headers: {
@@ -112,6 +118,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
   }, [serverId]);
 
   const sendMessage = (message: string) => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     if (message.trim() === "") return;
     fetch(`http://localhost:3001/api/private/send`, {
       method: "POST",
@@ -171,6 +180,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
   };
 
   const handleDeleteMessage = (message: string, id: any) => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch(`http://localhost:3001/api/private/delete`, {
       method: "DELETE",
       headers: {
@@ -251,6 +263,9 @@ export const Chat = ({ userFriends, serverId }: any) => {
 
   const submitEditMessage = (message: string, id: any, e: any) => {
     e.preventDefault();
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch(`http://localhost:3001/api/private/update`, {
       method: "PUT",
       headers: {

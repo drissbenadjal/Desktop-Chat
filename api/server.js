@@ -13,7 +13,19 @@ const { DB_HOST, DB_NAME, DB_USER, DB_PASS } = process.env;
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders:
+      "Content-Type,Authorization,X-Requested-With,Accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+    exposedHeaders:
+      "Content-Type,Authorization,X-Requested-With,Accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers",
+    optionsSuccessStatus: 200,
+  })
+);
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
 const db = mysql.createConnection({
@@ -1104,8 +1116,6 @@ io.on("connection", (socket) => {
       });
     }
   });
-
-  
 
   socket.on("callUser", (data) => {
     socket.broadcast.emit("callUser", {

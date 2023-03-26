@@ -23,6 +23,9 @@ export const Home = () => {
   };
 
   const fetchOnline = async () => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch("http://localhost:3001/api/friends/online", {
       method: "POST",
       headers: {
@@ -48,6 +51,9 @@ export const Home = () => {
   };
 
   const fetchAll = async () => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch("http://localhost:3001/api/friends/all", {
       method: "POST",
       headers: {

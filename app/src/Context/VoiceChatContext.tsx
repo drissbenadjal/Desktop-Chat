@@ -36,7 +36,7 @@ const VoiceChatContext = createContext<any>({
 const VoiceChatContextProvider = ({ children }: any) => {
   const socket = io("http://localhost:3001");
 
-  const { user } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const [video, setVideo] = useState(null);
   const [audio, setAudio] = useState(null);
@@ -86,6 +86,9 @@ const VoiceChatContextProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     handleMic();
     socket.on("callUser", (data: any) => {
       if (data.from === user.uuid) {

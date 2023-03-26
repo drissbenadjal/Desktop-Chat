@@ -18,6 +18,9 @@ export const UtilsBar = ({ infos }: any) => {
   const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
 
   const fetchCurrentPrivateChat = () => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch(`http://localhost:3001/api/private/current`, {
       method: "POST",
       headers: {
@@ -55,6 +58,9 @@ export const UtilsBar = ({ infos }: any) => {
   }, [infos]);
 
   const handleClosePrivateChat = (uuid: string) => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     navigate("/");
     setTimeout(() => {
       fetch(`http://localhost:3001/api/private/current/delete`, {

@@ -26,6 +26,9 @@ export const HeaderBar = ({
   const { callUser } = useContext(VoiceChatContext);
 
   const fetchUserInfos = () => {
+    if (getCookie("token") === undefined) {
+      logout();
+    }
     fetch(`http://localhost:3001/api/user/infos`, {
       method: "POST",
       headers: {
