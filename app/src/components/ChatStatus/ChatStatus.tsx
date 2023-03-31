@@ -18,10 +18,7 @@ export const ChatStatus = () => {
           <div className="chat-status__container__bottom__left">
             <button>
               <div className="status-container">
-                <img
-                  src={user?.pictureprofile}
-                  alt="logo"
-                />
+                <img draggable="false" src={user?.pictureprofile} alt="logo" />
                 <div className="status online"></div>
               </div>
               <div className="user-infos">
@@ -34,17 +31,17 @@ export const ChatStatus = () => {
             <ul>
               <li>
                 <button>
-                    <img src={MicIcon} alt="" />
+                  <img draggable="false" src={MicIcon} alt="" />
                 </button>
               </li>
               <li>
                 <button>
-                    <img src={HeadphoneIcon} alt="" />
+                  <img draggable="false" src={HeadphoneIcon} alt="" />
                 </button>
               </li>
               <li>
                 <button>
-                    <img src={SettingsIcon} alt="" />
+                  <img draggable="false" src={SettingsIcon} alt="" />
                 </button>
               </li>
             </ul>

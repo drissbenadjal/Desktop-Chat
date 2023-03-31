@@ -9,6 +9,8 @@
     align-items: center;
     background-color: #212121;
     border-top-left-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .utilsbar-header__server {

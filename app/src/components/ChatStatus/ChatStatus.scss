@@ -3,6 +3,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
 
     .chat-status__container {
         width: 100%;

@@ -41,8 +41,32 @@ const url = process.env.VITE_DEV_SERVER_URL
 const indexHtml = join(process.env.DIST, 'index.html')
 
 async function createWindow() {
+
+  const splashScreen = new BrowserWindow({
+    title: 'SPLASH SCREEN',
+    width: 400,
+    maxWidth: 400,
+    minWidth: 400,
+    height: 255,
+    maxHeight: 255,
+    minHeight: 255,
+    transparent: true,
+    frame: false,
+    resizable: false,
+    icon: join(process.env.PUBLIC, 'favicon.ico'),
+    alwaysOnTop: true,
+    webPreferences: {
+      preload,
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  })
+  splashScreen.setMenuBarVisibility(false)
+  splashScreen.loadFile(__dirname + '../../../splash/index.html')
+
   win = new BrowserWindow({
-    title: 'Main window',
+    show: false,
+    title: 'CHAT APP',
     icon: join(process.env.PUBLIC, 'favicon.ico'),
     width: 1280,
     minWidth: 1280,
@@ -58,6 +82,12 @@ async function createWindow() {
       contextIsolation: false,
     },
   })
+
+  setTimeout(() => {
+    splashScreen.destroy()
+    win.show()
+  }, 3000)
+
   win.setMenuBarVisibility(false);
   if (process.platform === 'darwin') {
     win.setWindowButtonVisibility(true);
