@@ -145,7 +145,6 @@ export const Home = () => {
     e.preventDefault();
     const pseudo = e.target.pseudotag.value.split("#")[0];
     const tag = e.target.pseudotag.value.split("#")[1];
-    console.log(pseudo, tag);
     fetch("http://localhost:3001/api/friends/request/send", {
       method: "POST",
       headers: {
