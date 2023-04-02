@@ -86,7 +86,7 @@ const VoiceChatContextProvider = ({ children }: any) => {
   };
 
   useEffect(() => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     handleMic();

@@ -7,6 +7,7 @@ export interface User {
   tag: string;
   uuid?: string;
   pictureprofile?: string;
+  token?: string;
 }
 
 export interface AuthContextType {
@@ -28,17 +29,17 @@ export interface Props {
 const AuthContext = createContext<AuthContextType>({
   loading: true,
   isAuthenticated: false,
-  user: { pseudo: "", tag: "", uuid: "", pictureprofile: "" },
+  user: { pseudo: "", tag: "", uuid: "", pictureprofile: "", token: "" },
   login: () => { },
   logout: () => { },
   loginError: "",
   signup: () => { },
   signupError: "",
-  socket: io("http://localhost:3001"),
+  socket: io("https://nexuschat.alwaysdata.net"),
 });
 
 const AuthContextProvider = ({ children }: Props) => {
-  const socket = io("http://localhost:3001");
+  const socket = io("https://nexuschat.alwaysdata.net");
   const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User>({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
@@ -50,7 +51,7 @@ const AuthContextProvider = ({ children }: Props) => {
       setLoading(false);
       return;
     };
-    fetch("http://localhost:3001/api/validtoken", {
+    fetch("https://nexuschat.alwaysdata.net/api/validtoken", {
       method: "POST",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -63,7 +64,7 @@ const AuthContextProvider = ({ children }: Props) => {
       .then((data) => {
         if (data.token) {
           setIsAuthenticated(true);
-          setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
+          setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile, token: data.token });
           socket.emit("token", getCookie("token"));
         } else {
           socket.emit("tokenlogout", getCookie("token"));
@@ -71,12 +72,12 @@ const AuthContextProvider = ({ children }: Props) => {
         }
         setLoading(false);
       }
-    );
+      );
   }, []);
 
   const login = (email: string, password: string) => {
     if (email.trim() !== "" && password.trim() !== "") {
-      fetch("http://localhost:3001/api/login", {
+      fetch("https://nexuschat.alwaysdata.net/api/login", {
         method: "POST",
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -90,9 +91,9 @@ const AuthContextProvider = ({ children }: Props) => {
         .then((data) => {
           if (data.token) {
             setIsAuthenticated(true);
-            setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile });
+            setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile, token: data.token });
             addCookie("token", data.token, 1);
-            socket.emit("token", getCookie("token"));
+            socket.emit("token", user.token);
           } else {
             setLoginError(data.message);
           }
@@ -102,7 +103,7 @@ const AuthContextProvider = ({ children }: Props) => {
 
   const signup = (pseudo: string, email: string, password: string) => {
     if (pseudo.trim() !== "" && email.trim() !== "" && password.trim() !== "") {
-      fetch("http://localhost:3001/api/signup", {
+      fetch("https://nexuschat.alwaysdata.net/api/signup", {
         method: "POST",
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
@@ -125,9 +126,9 @@ const AuthContextProvider = ({ children }: Props) => {
   };
 
   const logout = () => {
-    socket.emit("tokenlogout", getCookie("token"));
+    socket.emit("tokenlogout", user.token);
     setIsAuthenticated(false);
-    setUser({ pseudo: "", tag: "", uuid: "", pictureprofile: "" });
+    setUser({ pseudo: "", tag: "", uuid: "", pictureprofile: "", token: "" });
     removeCookie("token");
   };
 

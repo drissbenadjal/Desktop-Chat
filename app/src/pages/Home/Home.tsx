@@ -23,7 +23,7 @@ export const Home = () => {
   };
 
   const fetchOnline = async () => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch("http://localhost:3001/api/friends/online", {
@@ -32,7 +32,7 @@ export const Home = () => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
       }),
     })
       .then((res) => res.json())
@@ -51,7 +51,7 @@ export const Home = () => {
   };
 
   const fetchAll = async () => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch("http://localhost:3001/api/friends/all", {
@@ -60,7 +60,7 @@ export const Home = () => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
       }),
     })
       .then((res) => res.json())
@@ -85,7 +85,7 @@ export const Home = () => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
       }),
     })
       .then((res) => res.json())
@@ -110,7 +110,7 @@ export const Home = () => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
       }),
     })
       .then((res) => res.json())
@@ -140,7 +140,7 @@ export const Home = () => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         pseudo: pseudo,
         tag: tag,
       }),

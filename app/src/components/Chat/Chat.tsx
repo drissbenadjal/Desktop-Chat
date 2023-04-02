@@ -30,7 +30,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
   };
 
   const fetchUserInfos = () => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch(`http://localhost:3001/api/user/infos`, {
@@ -39,7 +39,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         uuid2: userFriends as string,
       }),
     })
@@ -70,7 +70,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
   }, [userFriends]);
 
   const fetchPrivateChat = () => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch(`http://localhost:3001/api/private`, {
@@ -79,7 +79,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         uuid2: userFriends as string,
       }),
     })
@@ -118,7 +118,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
   }, [serverId]);
 
   const sendMessage = (message: string) => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     if (message.trim() === "") return;
@@ -128,7 +128,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         uuid2: userFriends as string,
         message: message,
       }),
@@ -180,7 +180,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
   };
 
   const handleDeleteMessage = (message: string, id: any) => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch(`http://localhost:3001/api/private/delete`, {
@@ -189,7 +189,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         uuid2: userFriends as string,
         idMessage: id,
         message: message,
@@ -263,7 +263,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
 
   const submitEditMessage = (message: string, id: any, e: any) => {
     e.preventDefault();
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch(`http://localhost:3001/api/private/update`, {
@@ -272,7 +272,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         uuid2: userFriends as string,
         idMessage: id,
         message: message,

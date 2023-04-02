@@ -21,12 +21,12 @@ export const HeaderBar = ({
   LinkPage?: string;
   userFriends?: string;
 }) => {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [userInfos, setUserInfos] = useState<any>([]);
   const { callUser } = useContext(VoiceChatContext);
 
   const fetchUserInfos = () => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch(`http://localhost:3001/api/user/infos`, {
@@ -35,7 +35,7 @@ export const HeaderBar = ({
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
         uuid2: userFriends as string,
       }),
     })

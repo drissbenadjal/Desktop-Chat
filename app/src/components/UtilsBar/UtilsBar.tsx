@@ -14,11 +14,11 @@ import WalletIcon from "../../assets/icons/wallet.svg";
 export const UtilsBar = ({ infos }: any) => {
   const navigate = useNavigate();
 
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
   const [currentPrivateChat, setCurrentPrivateChat] = useState<any>([]);
 
   const fetchCurrentPrivateChat = () => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     fetch(`http://localhost:3001/api/private/current`, {
@@ -27,7 +27,7 @@ export const UtilsBar = ({ infos }: any) => {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        token: getCookie("token") as string,
+        token: user.token as string,
       }),
     })
       .then((res) => res.json())
@@ -58,7 +58,7 @@ export const UtilsBar = ({ infos }: any) => {
   }, [infos]);
 
   const handleClosePrivateChat = (uuid: string) => {
-    if (getCookie("token") === undefined) {
+    if (user.token === undefined) {
       logout();
     }
     navigate("/");
@@ -69,7 +69,7 @@ export const UtilsBar = ({ infos }: any) => {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
-          token: getCookie("token") as string,
+          token: user.token as string,
           uuid: uuid,
         }),
       })
