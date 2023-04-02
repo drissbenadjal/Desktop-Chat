@@ -148,7 +148,7 @@ export const Home = () => {
       .then((data) => {
         if (data.message === "Token invalide") {
           logout();
-        } else if (data.message === "Demande d'ami acceptée") {
+        } else if (data.message === "ok") {
           fetchWaiting();
         } else {
         }
