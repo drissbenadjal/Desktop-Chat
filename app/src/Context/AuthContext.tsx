@@ -93,7 +93,7 @@ const AuthContextProvider = ({ children }: Props) => {
             setIsAuthenticated(true);
             setUser({ pseudo: data.pseudo, tag: data.tag, uuid: data.uuid, pictureprofile: data.pictureprofile, token: data.token });
             addCookie("token", data.token, 1);
-            socket.emit("token", user.token);
+            socket.emit("token", getCookie("token"));
           } else {
             setLoginError(data.message);
           }
