@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build && electron-builder --publish never",
-    "build-publish": "tsc && vite build && electron-builder --win --publish always",
+    "deploy": "tsc && vite build && electron-builder --win --publish always",
     "preview": "vite preview",
     "pree2e": "vite build --mode=test",
     "e2e": "playwright test"

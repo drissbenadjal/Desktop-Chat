@@ -31,4 +31,3 @@ yarn.lock
 /test-results/
 /playwright-report/
 /playwright/.cache/
-app/electron-builder.json5
