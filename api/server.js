@@ -819,6 +819,68 @@ app.post("/api/friends/request/waiting", (req, res) => {
   }
 });
 
+app.post("/api/friends/accept", (req, res) => {
+  let token = req.body.token;
+  let uuid = req.body.uuid;
+  if (token) {
+    let id = jwt.decode(token).id;
+    db.query("SELECT * FROM users WHERE uuid = ?", [id], (err, result) => {
+      if (err) {
+        console.log(err);
+      }
+      if (result.length > 0) {
+        let secret = result[0].secret;
+        jwt.verify(token, secret, (err, decoded) => {
+          if (err) {
+            res.status(300).json({ message: "Token invalide" });
+          } else {
+            req.user = decoded;
+            db.query(
+              "SELECT * FROM friends_requests WHERE sender = ? AND receiver = ?",
+              [uuid, id],
+              (err, result) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  if (result.length > 0) {
+                    db.query(
+                      "INSERT INTO friends (uuid_first, uuid_second) VALUES (?, ?)",
+                      [id, uuid],
+                      (err, result) => {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          db.query(
+                            "DELETE FROM friends_requests WHERE sender = ? AND receiver = ?",
+                            [uuid, id],
+                            (err, result) => {
+                              if (err) {
+                                console.log(err);
+                              } else {
+                                res.status(200).json({ message: "ok" });
+                              }
+                            }
+                          );
+                        }
+                      }
+                    );
+                  } else {
+                    res.status(300).json({ message: "Token invalide" });
+                  }
+                }
+              }
+            );
+          }
+        });
+      } else {
+        res.status(300).json({ message: "Token invalide" });
+      }
+    });
+  } else {
+    res.status(300).json({ message: "Token invalide" });
+  }
+});
+
 app.post("/api/friends/request/blocked", (req, res) => {
   let token = req.body.token;
   if (token) {

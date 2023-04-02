@@ -8,10 +8,11 @@ import "./Home.scss";
 import MessageLogo from "../../assets/icons/message.svg";
 import MoreLogo from "../../assets/icons/more.svg";
 import CloseLogo from "../../assets/icons/close-svg.svg";
+import AcceptLogo from "../../assets/icons/accept.svg";
 
 export const Home = () => {
 
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   const [count, setCount] = useState(0);
   const [ViewHome, setViewHome] = useState("online");
@@ -126,6 +127,34 @@ export const Home = () => {
       })
       .catch((err) => {
           
+      });
+  };
+
+  const handleAccept = async (uuid: string) => {
+    if (user.token === undefined) {
+      logout();
+    }
+    fetch("http://localhost:3001/api/friends/accept", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({
+        token: user.token as string,
+        uuid: uuid,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message === "Token invalide") {
+          logout();
+        } else if (data.message === "Demande d'ami acceptée") {
+          fetchWaiting();
+        } else {
+        }
+      })
+      .catch((err) => {
+
       });
   };
 
@@ -346,6 +375,7 @@ export const Home = () => {
                               </div>
                             </Link>
                             <button>
+                              <img src={AcceptLogo} alt="accept" onClick={() => handleAccept(friend.uuid)} />
                               <img src={CloseLogo} alt="delete" />
                             </button>
                           </li>
