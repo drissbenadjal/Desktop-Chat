@@ -28,7 +28,7 @@ const rooter = createHashRouter(
     <Route path="/server/:id" element={<View page="server" />} />,
     <Route path="/private" element={<View page="private" />} />,
     <Route path="/private/:id" element={<View page="private" />} />,
-    <Route path="/premium" element={<View page="premium" />} />,
+    <Route path="/wallet" element={<View page="wallet" />} />,
   ])
 );
 

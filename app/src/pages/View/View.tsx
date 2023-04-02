@@ -13,7 +13,7 @@ import { Signup } from "../Signup/Signup";
 import { Home } from "../Home/Home";
 import { Server } from "../Server/Server";
 import { Private } from "../Private/Private";
-import { Premium } from "../Premium/Premium";
+import { Wallet } from "../Wallet/Wallet";
 
 import "./View.scss";
 
@@ -104,14 +104,14 @@ export const View = ({ page }: any) => {
               </main>
             </>
           );
-        } else if (page === "premium") {
+        } else if (page === "wallet") {
           return (
             <>
               <main>
                 <SideBar />
                 <UtilsBar infos="friends" />
                 <div className="View">
-                  <Premium />
+                  <Wallet />
                 </div>
               </main>
             </>

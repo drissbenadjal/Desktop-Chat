@@ -1,6 +1,7 @@
 import { app, BrowserWindow, shell, ipcMain } from 'electron'
 import { release } from 'node:os'
 import { join } from 'node:path'
+import { autoUpdater } from 'electron-updater'
 
 // The built directory structure
 //
@@ -83,10 +84,29 @@ async function createWindow() {
     },
   })
 
-  setTimeout(() => {
-    splashScreen.destroy()
-    win.show()
-  }, 3000)
+  // setTimeout(() => {
+  //   splashScreen.destroy()
+  //   win.show()
+  // }, 3000)
+
+  win.once("ready-to-show", () => {
+    autoUpdater.checkForUpdatesAndNotify();
+  });
+
+  autoUpdater.on("update-not-available", () => {
+    setTimeout(() => {
+      splashScreen.destroy()
+      win.show()
+    }, 500)
+  });
+
+  autoUpdater.on("update-available", () => {
+    win.webContents.send("update_available");
+  });
+
+  autoUpdater.on("update-downloaded", () => {
+    autoUpdater.quitAndInstall();
+  });
 
   win.setMenuBarVisibility(false);
   if (process.platform === 'darwin') {

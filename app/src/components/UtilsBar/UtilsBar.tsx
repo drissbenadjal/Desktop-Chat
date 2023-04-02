@@ -110,11 +110,11 @@ export const UtilsBar = ({ infos }: any) => {
               <p>Friends</p>
             </Link>
             <Link
-              to="/premium"
-              className={useLocation().pathname === "/premium" ? "active" : ""}
+              to="/wallet"
+              className={useLocation().pathname === "/wallet" ? "active" : ""}
             >
               <img src={WalletIcon} alt="" />
-              <p>Premium</p>
+              <p>Wallet</p>
             </Link>
           </div>
           <div className="utilsbar-friend">
