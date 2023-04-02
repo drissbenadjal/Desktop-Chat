@@ -35,10 +35,6 @@
     "deleteAppDataOnUninstall": false
   },
   "publish": [
-    {
-      "provider": "github",
-      "owner": "Driss Benadjal",
-      "repo": "Desktop-Chat"
-    }
+    "github"
   ]
 }
