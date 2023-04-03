@@ -91,6 +91,9 @@ async function createWindow() {
 
   win.once("ready-to-show", () => {
     autoUpdater.checkForUpdatesAndNotify();
+    setInterval(() => {
+      autoUpdater.checkForUpdatesAndNotify();
+    }, 60000);
   });
 
   autoUpdater.on("update-not-available", () => {
