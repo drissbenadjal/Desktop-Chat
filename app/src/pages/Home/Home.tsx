@@ -45,7 +45,7 @@ export const Home = () => {
           setCount(data.length);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const fetchAll = async () => {
@@ -71,7 +71,7 @@ export const Home = () => {
           setCount(data.length);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const fetchWaiting = async () => {
@@ -94,7 +94,7 @@ export const Home = () => {
           setCount(data.length);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const fetchBlocked = async () => {
@@ -117,7 +117,7 @@ export const Home = () => {
           setCount(data.length);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const handleAccept = async (uuid: string) => {
@@ -138,7 +138,7 @@ export const Home = () => {
       .then((data) => {
         fetchWaiting();
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const sendRequest = async (e: any) => {
@@ -164,7 +164,7 @@ export const Home = () => {
           setAddMessage(data.message);
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   const BtnRequest = useRef<HTMLButtonElement>(null);
@@ -180,19 +180,39 @@ export const Home = () => {
     if (ViewHome === "online") {
       setCount(0);
       setData([]);
-      fetchOnline();
+      const interval = setInterval(() => {
+        fetchOnline();
+      }, 500);
+      return () => {
+        clearInterval(interval);
+      }
     } else if (ViewHome === "all") {
       setCount(0);
       setData([]);
-      fetchAll();
+      const interval = setInterval(() => {
+        fetchAll();
+      }, 500);
+      return () => {
+        clearInterval(interval);
+      }
     } else if (ViewHome === "waiting") {
       setCount(0);
       setData([]);
-      fetchWaiting();
+      const interval = setInterval(() => {
+        fetchWaiting();
+      }, 500);
+      return () => {
+        clearInterval(interval);
+      }
     } else if (ViewHome === "blocked") {
       setCount(0);
       setData([]);
-      fetchBlocked();
+      const interval = setInterval(() => {
+        fetchBlocked();
+      }, 500);
+      return () => {
+        clearInterval(interval);
+      }
     } else if (ViewHome === "requests") {
       setAddMessage("");
     }
@@ -207,14 +227,14 @@ export const Home = () => {
           ViewHome === "online"
             ? "online"
             : ViewHome === "all"
-            ? "all"
-            : ViewHome === "waiting"
-            ? "waiting"
-            : ViewHome === "blocked"
-            ? "blocked"
-            : ViewHome === "requests"
-            ? "requests"
-            : "online"
+              ? "all"
+              : ViewHome === "waiting"
+                ? "waiting"
+                : ViewHome === "blocked"
+                  ? "blocked"
+                  : ViewHome === "requests"
+                    ? "requests"
+                    : "online"
         }
       />
       <div className="home__content">

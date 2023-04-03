@@ -56,7 +56,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
         } else {
         }
       })
-      .catch((err) => {});
+      .catch((err) => { });
   };
 
   useEffect(() => {
@@ -68,6 +68,8 @@ export const Chat = ({ userFriends, serverId }: any) => {
       return () => clearInterval(interval);
     }
   }, [userFriends]);
+
+  const [oldPrivateChat, setOldPrivateChat] = useState<any>([]);
 
   const fetchPrivateChat = () => {
     if (user.token === undefined) {
@@ -91,9 +93,18 @@ export const Chat = ({ userFriends, serverId }: any) => {
           setCurrentPrivateChat([]);
         } else {
           setCurrentPrivateChat(data);
+          if (oldPrivateChat !== currentPrivateChat) {
+            setOldPrivateChat(currentPrivateChat);
+          }
         }
       });
   };
+
+  useEffect(() => {
+    if (currentPrivateChat === undefined) return;
+    if (oldPrivateChat === currentPrivateChat) return;
+    scrollToBottom();
+  }, [oldPrivateChat]);
 
   const fetchChatServer = () => {
     console.log("fetch " + serverId);
@@ -369,7 +380,7 @@ export const Chat = ({ userFriends, serverId }: any) => {
                 ) : (
                   <li>
                     <button onClick={answerCall}>
-                          <img src={LogoVideo} alt="Accept" draggable="false" />
+                      <img src={LogoVideo} alt="Accept" draggable="false" />
                     </button>
                   </li>
                 )}
@@ -451,18 +462,18 @@ export const Chat = ({ userFriends, serverId }: any) => {
                               // si la date est aujourd'hui, afficher l'heure
                               // sinon afficher la date
                               date ===
-                              new Date().toLocaleDateString("fr-FR", {
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
-                              })
+                                new Date().toLocaleDateString("fr-FR", {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                })
                                 ? new Date(message.date).toLocaleTimeString(
-                                    "fr-FR",
-                                    {
-                                      hour: "2-digit",
-                                      minute: "2-digit",
-                                    }
-                                  )
+                                  "fr-FR",
+                                  {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                  }
+                                )
                                 : date
                             }
                           </p>
