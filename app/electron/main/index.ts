@@ -100,14 +100,6 @@ async function createWindow() {
     }, 500)
   });
 
-  autoUpdater.on("update-available", () => {
-    win.webContents.send("update_available");
-  });
-
-  autoUpdater.on("update-downloaded", () => {
-    autoUpdater.quitAndInstall();
-  });
-
   win.setMenuBarVisibility(false);
   if (process.platform === 'darwin') {
     win.setWindowButtonVisibility(true);
@@ -134,6 +126,16 @@ async function createWindow() {
 }
 
 app.whenReady().then(createWindow)
+
+
+
+autoUpdater.on("update-available", () => {
+  win.webContents.send("update_available");
+});
+
+autoUpdater.on("update-downloaded", () => {
+  autoUpdater.quitAndInstall();
+});
 
 
 app.on('window-all-closed', () => {
