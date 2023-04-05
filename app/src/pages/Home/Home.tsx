@@ -15,7 +15,10 @@ export const Home = () => {
 
   const [count, setCount] = useState(0);
   const [ViewHome, setViewHome] = useState("online");
-  const [Data, setData] = useState([]);
+  const [DataOnline, setDataOnline] = useState([]);
+  const [DataAll, setDataAll] = useState([]);
+  const [DataWaiting, setDataWaiting] = useState([]);
+  const [DataBlocked, setDataBlocked] = useState([]);
   const [addMessage, setAddMessage] = useState("");
 
   const handleView = (view: string) => {
@@ -41,7 +44,7 @@ export const Home = () => {
           logout();
         } else if (data.number === 0) {
         } else {
-          setData(data);
+          setDataOnline(data);
           setCount(data.length);
         }
       })
@@ -67,7 +70,7 @@ export const Home = () => {
           logout();
         } else if (data.number === 0) {
         } else {
-          setData(data);
+          setDataAll(data);
           setCount(data.length);
         }
       })
@@ -90,7 +93,7 @@ export const Home = () => {
           logout();
         } else if (data.number === 0) {
         } else {
-          setData(data);
+          setDataWaiting(data);
           setCount(data.length);
         }
       })
@@ -113,7 +116,7 @@ export const Home = () => {
           logout();
         } else if (data.number === 0) {
         } else {
-          setData(data);
+          setDataBlocked(data);
           setCount(data.length);
         }
       })
@@ -177,9 +180,12 @@ export const Home = () => {
   };
 
   useEffect(() => {
+    fetchOnline();
+    fetchAll();
+    fetchWaiting();
+    fetchBlocked();
     if (ViewHome === "online") {
       setCount(0);
-      setData([]);
       const interval = setInterval(() => {
         fetchOnline();
       }, 500);
@@ -188,7 +194,6 @@ export const Home = () => {
       }
     } else if (ViewHome === "all") {
       setCount(0);
-      setData([]);
       const interval = setInterval(() => {
         fetchAll();
       }, 500);
@@ -197,7 +202,6 @@ export const Home = () => {
       }
     } else if (ViewHome === "waiting") {
       setCount(0);
-      setData([]);
       const interval = setInterval(() => {
         fetchWaiting();
       }, 500);
@@ -206,7 +210,6 @@ export const Home = () => {
       }
     } else if (ViewHome === "blocked") {
       setCount(0);
-      setData([]);
       const interval = setInterval(() => {
         fetchBlocked();
       }, 500);
@@ -246,7 +249,7 @@ export const Home = () => {
                   <input type="text" placeholder="Search" />
                 </form>
               </div>
-              {Data.length === 0 ? (
+              {DataOnline.length === 0 ? (
                 <div className="none-data">
                   <h3>No friends online</h3>
                 </div>
@@ -258,7 +261,7 @@ export const Home = () => {
                     <h3>{count}</h3>
                   </div>
                   <ul className="home__content__left__header__list">
-                    {Data.map((friend: any) => {
+                    {DataOnline.map((friend: any) => {
                       return (
                         <li key={friend.uuid}>
                           <Link to={`/private/${friend.uuid}`}>
@@ -291,7 +294,7 @@ export const Home = () => {
                   <input type="text" placeholder="Search" />
                 </form>
               </div>
-              {Data.length === 0 ? (
+              {DataAll.length === 0 ? (
                 <div className="none-data">
                   <h3>No friends</h3>
                 </div>
@@ -303,7 +306,7 @@ export const Home = () => {
                     <h3>{count}</h3>
                   </div>
                   <ul className="home__content__left__header__list">
-                    {Data.map((friend: any) => {
+                    {DataAll.map((friend: any) => {
                       return (
                         <li key={friend.uuid}>
                           <Link to={`/private/${friend.uuid}`}>
@@ -336,7 +339,7 @@ export const Home = () => {
                   <input type="text" placeholder="Search" />
                 </form>
               </div>
-              {Data.length === 0 ? (
+              {DataWaiting.length === 0 ? (
                 <div className="none-data">
                   <h3>You have no friend requests</h3>
                 </div>
@@ -348,7 +351,7 @@ export const Home = () => {
                     <h3>{count}</h3>
                   </div>
                   <ul className="home__content__left__header__list">
-                    {Data.map((friend: any) => {
+                    {DataWaiting.map((friend: any) => {
                       return (
                         <li key={friend.uuid}>
                           <Link to="">
@@ -381,7 +384,7 @@ export const Home = () => {
                   <input type="text" placeholder="Search" />
                 </form>
               </div>
-              {Data.length === 0 ? (
+              {DataBlocked.length === 0 ? (
                 <div className="none-data">
                   <h3>You have no blocked friends</h3>
                 </div>
@@ -393,7 +396,7 @@ export const Home = () => {
                     <h3>{count}</h3>
                   </div>
                   <ul className="home__content__left__header__list">
-                    {Data.map((friend: any) => {
+                    {DataBlocked.map((friend: any) => {
                       return (
                         <li key={friend.uuid}>
                           <Link to="">
